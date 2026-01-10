@@ -16,6 +16,7 @@ const { spawn } = require("child_process");
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 const APP_DIR = process.env.APP_DIR || "/opt/retralabs";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || 9000);
+const WEBHOOK_HOST = process.env.WEBHOOK_HOST || "0.0.0.0";
 
 if (!WEBHOOK_SECRET) {
   console.error("WEBHOOK_SECRET is required");
@@ -102,8 +103,10 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(WEBHOOK_PORT, "127.0.0.1", () => {
-  console.log(`Deploy webhook listening on http://127.0.0.1:${WEBHOOK_PORT}/webhook/deploy`);
+server.listen(WEBHOOK_PORT, WEBHOOK_HOST, () => {
+  console.log(
+    `Deploy webhook listening on http://${WEBHOOK_HOST}:${WEBHOOK_PORT}/webhook/deploy`,
+  );
 });
 
 
