@@ -1,0 +1,20 @@
+{
+  "name": "retralabs",
+  "version": "1.0.0",
+  "description": "RetraLabs - Innovation Through Technology",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "retralabs",
+    "website",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

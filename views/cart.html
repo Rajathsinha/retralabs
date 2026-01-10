@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | RetraLabs</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300D2D3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2L3 7v10l9 5 9-5V7l-9-5z'/><path d='M12 22V12'/><path d='M21 7l-9 5-9-5'/><circle cx='12' cy='12' r='3' fill='%2300D2D3' fill-opacity='0.3'/></svg>">
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: '#0A0A0A',
+                        accent: '#00D2D3',
+                        premium: '#F5F5F7',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-premium text-charcoal font-sans antialiased">
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="fixed w-4 h-4 bg-accent rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-premium/80 backdrop-blur-xl border-b border-charcoal/5 py-6" id="navbar">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold tracking-tighter flex items-center gap-3">
+                <div class="w-10 h-10 bg-charcoal rounded-xl flex items-center justify-center shadow-lg transform -rotate-6">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 7L12 12L3 7" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="12" r="3" fill="#00D2D3" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <span class="text-charcoal uppercase tracking-[0.1em] text-xl">Retra<span class="font-light">Labs</span><span class="text-accent">.</span></span>
+            </a>
+            
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors">Home</a>
+                <a href="/cart" class="relative group">
+                    <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-charcoal text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-40 pb-20">
+        <div class="container mx-auto px-6 md:px-12 max-w-5xl">
+            <header class="mb-12 scroll-reveal">
+                <h1 class="text-5xl font-extrabold tracking-tight mb-2">Shopping Cart<span class="text-accent">.</span></h1>
+                <p class="text-gray-500">Review your laboratory research compounds.</p>
+            </header>
+
+            <div id="cart-content" class="scroll-reveal">
+                <!-- Cart items will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+    <script>
+        // Render cart items with premium styling
+        function renderCart() {
+            const cartContent = document.getElementById('cart-content');
+            
+            if (!window.cart || window.cart.items.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="bg-white rounded-[3rem] p-20 text-center border border-charcoal/5 shadow-sm">
+                        <div class="w-20 h-20 bg-premium rounded-full flex items-center justify-center mx-auto mb-8 text-gray-300">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-4">Your cart is empty</h2>
+                        <p class="text-gray-500 mb-10">Start building your research collection.</p>
+                        <a href="/#products" class="inline-block bg-charcoal text-white px-10 py-5 rounded-full font-bold hover:bg-accent transition-all">Explore Compounds</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let itemsHTML = '<div class="space-y-6 mb-12">';
+            
+            window.cart.items.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                itemsHTML += `
+                    <div class="bg-white rounded-[2.5rem] p-8 md:p-10 border border-charcoal/5 shadow-sm flex flex-col md:flex-row justify-between items-center gap-8 group hover:shadow-xl transition-all duration-500">
+                        <div class="flex items-center gap-8 w-full md:w-auto">
+                            <div class="w-20 h-20 bg-premium rounded-2xl flex items-center justify-center shrink-0">
+                                <div class="w-8 h-12 bg-charcoal/10 rounded border border-charcoal/5 relative overflow-hidden">
+                                    <div class="absolute top-2 left-0 w-full h-2 bg-accent/20"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold tracking-tight group-hover:text-accent transition-colors">${item.productName}</h3>
+                                <p class="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase">${item.dosage}mg • 10 VIAL KIT</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between md:justify-end gap-12 w-full md:w-auto">
+                            <div class="flex items-center gap-6 bg-premium p-2 rounded-2xl border border-charcoal/5">
+                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white shadow-sm hover:text-accent transition-colors font-bold" onclick="updateQuantity(${index}, -1)">−</button>
+                                <span class="text-lg font-bold w-4 text-center">${item.quantity}</span>
+                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white shadow-sm hover:text-accent transition-colors font-bold" onclick="updateQuantity(${index}, 1)">+</button>
+                            </div>
+                            
+                            <div class="text-2xl font-black tracking-tighter">₹${itemTotal.toLocaleString()}</div>
+                            
+                            <button class="text-gray-300 hover:text-red-500 transition-colors p-2" onclick="removeItem(${index})">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            itemsHTML += '</div>';
+
+            const subtotal = window.cart.getSubtotal();
+            const deliveryCharge = window.cart.deliveryCharge;
+            const total = window.cart.getTotal();
+
+            itemsHTML += `
+                <div class="bg-charcoal text-white rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-20 opacity-10 pointer-events-none">
+                         <svg class="w-64 h-64 text-accent" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.477.859h4z"></path></svg>
+                    </div>
+                    
+                    <div class="relative z-10">
+                        <div class="space-y-4 mb-10 pb-10 border-b border-white/10">
+                            <div class="flex justify-between items-center text-gray-400">
+                                <span class="font-bold uppercase tracking-widest text-xs">Subtotal</span>
+                                <span class="font-bold">₹${subtotal.toLocaleString()}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-400">
+                                <span class="font-bold uppercase tracking-widest text-xs">Research Logistics</span>
+                                <span class="font-bold">₹${deliveryCharge.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                            <div>
+                                <span class="block text-accent font-bold uppercase tracking-widest text-[10px] mb-2">Grand Total</span>
+                                <div class="text-6xl font-black tracking-tighter">₹${total.toLocaleString()}</div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-6 w-full md:w-auto">
+                                <a href="/#products" class="px-10 py-5 rounded-full font-bold border border-white/10 hover:bg-white/5 text-center transition-all">Continue Research</a>
+                                <button onclick="proceedToCheckout()" class="bg-accent text-charcoal px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-xl shadow-accent/20">Secure Checkout</button>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            `;
+
+            cartContent.innerHTML = itemsHTML;
+            
+            // Re-trigger scroll reveal for newly added content
+            gsap.from("#cart-content > *", {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "expo.out"
+            });
+        }
+
+        function updateQuantity(index, change, newValue) {
+            const item = window.cart.items[index];
+            const quantity = newValue !== undefined ? parseInt(newValue) : item.quantity + change;
+            window.cart.updateQuantity(item.productKey, item.dosage, quantity);
+            renderCart();
+        }
+
+        function removeItem(index) {
+            const item = window.cart.items[index];
+            window.cart.removeItem(item.productKey, item.dosage);
+            renderCart();
+        }
+
+        function proceedToCheckout() {
+            if (window.cart.items.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            window.location.href = '/checkout';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+        renderCart();
+            if (window.cart) window.cart.updateCartUI();
+        });
+    </script>
+</body>
+</html>
+

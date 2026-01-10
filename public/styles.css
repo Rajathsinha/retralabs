@@ -1,0 +1,127 @@
+/* Core Variables */
+:root {
+    --charcoal: #0A0A0A;
+    --accent: #00D2D3;
+    --premium-white: #F5F5F7;
+    --glass: rgba(255, 255, 255, 0.7);
+    --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--premium-white);
+    color: var(--charcoal);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Glassmorphism */
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Animations Helper */
+.scroll-reveal {
+    /* Let GSAP handle the initial state to avoid conflicts */
+    will-change: transform, opacity;
+}
+
+/* Hero Section Specifics */
+.hero-title {
+    letter-spacing: -0.04em;
+}
+
+.animate-spin-slow {
+    animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Scroll Indicator */
+.scroll-line {
+    animation: scroll-anim 2s infinite;
+}
+
+@keyframes scroll-anim {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(200%); }
+}
+
+/* Custom Cursor */
+#custom-cursor {
+    transition: transform 0.1s ease;
+    mix-blend-difference: difference;
+}
+
+/* Navigation Scrolled State */
+nav.scrolled {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    background: rgba(245, 245, 247, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Magnetic Button Feel */
+.magnetic-btn {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Section Header Gradient */
+.section-gradient-text {
+    background: linear-gradient(135deg, var(--charcoal) 0%, #444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3.5rem;
+    }
+}
+
+/* GSAP Reveal Wrappers */
+.reveal-wrapper {
+    position: relative;
+    overflow: hidden;
+    }
+
+.reveal-content {
+    display: block;
+}
+
+/* Wave Animation for Liquid */
+@keyframes wave {
+    0% { transform: scaleY(1) translateY(0); }
+    50% { transform: scaleY(1.05) translateY(-2px); }
+    100% { transform: scaleY(1) translateY(0); }
+}
+
+.animate-wave {
+    animation: wave 4s ease-in-out infinite;
+    transform-origin: bottom;
+}
+
+/* Glassmorphism Refinements */
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}

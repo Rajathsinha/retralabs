@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetraLabs | Elite Biotech Research</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300D2D3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2L3 7v10l9 5 9-5V7l-9-5z'/><path d='M12 22V12'/><path d='M21 7l-9 5-9-5'/><circle cx='12' cy='12' r='3' fill='%2300D2D3' fill-opacity='0.3'/></svg>">
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: '#0A0A0A',
+                        accent: '#00D2D3', // Teal accent
+                        premium: '#F5F5F7', // Apple style white
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-premium text-charcoal font-sans antialiased overflow-x-hidden">
+
+    <!-- Custom Cursor (Optional but premium) -->
+    <div id="custom-cursor" class="fixed w-4 h-4 bg-accent rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6" id="navbar">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <div class="text-2xl font-extrabold tracking-tighter flex items-center gap-3">
+                <div class="w-10 h-10 bg-charcoal rounded-xl flex items-center justify-center shadow-lg transform -rotate-6 group hover:rotate-0 transition-transform duration-500">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 7L12 12L3 7" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="12" r="3" fill="#00D2D3" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <span class="text-charcoal uppercase tracking-[0.1em] text-xl">Retra<span class="font-light">Labs</span><span class="text-accent">.</span></span>
+            </div>
+            
+            <div class="hidden md:flex gap-10 text-sm font-medium tracking-wide uppercase">
+                <a href="#manifesto" class="hover:text-accent transition-colors">About</a>
+                <a href="#products" class="hover:text-accent transition-colors">Product</a>
+                <a href="#contact" class="hover:text-accent transition-colors text-charcoal font-bold">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="/cart" class="relative group">
+                    <svg class="w-6 h-6 group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-charcoal text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </a>
+                <button class="md:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- RetraLabs Manifesto (The First Slide) -->
+        <section class="min-h-screen flex items-center relative overflow-hidden bg-white pt-32 pb-20" id="manifesto">
+            <div class="container mx-auto px-6 md:px-12 relative z-10">
+                <div class="max-w-5xl mx-auto">
+                    <div class="overflow-hidden mb-8">
+                        <span class="inline-block text-accent font-bold tracking-[0.3em] uppercase text-xs scroll-reveal">Mission Protocol 01</span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-12 scroll-reveal">
+                        The RetraLabs <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-charcoal via-charcoal to-accent/60">Foundation.</span>
+                    </h1>
+
+                    <div class="grid md:grid-cols-2 gap-16 items-start">
+                        <div class="space-y-8 text-lg text-gray-500 leading-relaxed scroll-reveal">
+                            <p class="text-charcoal font-medium italic border-l-4 border-accent pl-6 py-2">
+                                "At RetraLabs, we source our peptides directly from trusted manufacturers from our partner china who offer genuine quality at transparent, fair pricing. Our goal is simple: to provide legit, research-grade peptides at reasonable prices without scams or shortcuts."
+                            </p>
+                            <p class="text-charcoal font-bold">
+                                We are new to the Indian market, and we genuinely appreciate your support as we build something reliable and long-term here. 
+                            </p>
+                            <p>
+                                Before starting RetraLabs, we personally faced difficulties finding authentic peptide sources in India. Through extensive research, we realized that there is currently no verified, genuine source of Retatrutide or other UGL peptides available domestically. That gap is exactly why RetraLabs exists.
+                            </p>
+                        </div>
+                        <div class="space-y-8 text-lg text-gray-500 leading-relaxed scroll-reveal" style="transition-delay: 0.2s;">
+                            <p>
+                                We operate with complete transparency and integrity. All products are handled carefully, and we take responsibility for sourcing, customs clearance, and quality control. Our focus is on purity, consistency, and honest communication.
+                            </p>
+                            <div class="p-8 bg-premium rounded-[2rem] border border-charcoal/5">
+                                <h4 class="text-charcoal font-bold mb-4">The Trust Covenant</h4>
+                                <p class="text-sm">
+                                    Trust is earned. If you feel a product is not performing as expected, or if you have a valid lab report showing purity below acceptable standards, we are open to discussion and will offer a refund or appropriate compensation.
+                                </p>
+                            </div>
+                            <p class="text-sm font-bold text-charcoal/40 uppercase tracking-widest">
+                                Important: Retatrutide is currently not FDA-approved and is intended for laboratory research only.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-16 flex items-center gap-8 scroll-reveal" style="transition-delay: 0.4s;">
+                        <a href="#home" class="bg-charcoal text-white px-10 py-5 rounded-full font-bold hover:bg-accent transition-all duration-300 shadow-xl flex items-center gap-2 group">
+                            Enter Experience
+                            <svg class="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Background Aesthetic -->
+            <div class="absolute top-0 right-0 w-1/3 h-full bg-premium/50 -z-10 skew-x-12 translate-x-20"></div>
+        </section>
+
+        <!-- Hero Section (Visual Hook) -->
+        <section class="min-h-screen flex items-center relative overflow-hidden bg-premium pt-20" id="home">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-1/4 -left-20 w-96 h-96 bg-accent/5 rounded-full blur-[120px] animate-pulse"></div>
+                <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="container mx-auto px-6 md:px-12 relative z-10">
+                <div class="max-w-4xl">
+                    <div class="overflow-hidden mb-4">
+                        <span class="inline-block text-accent font-bold tracking-[0.2em] uppercase text-xs hero-reveal">Future of Cellular Longevity</span>
+                    </div>
+                    <h1 class="text-6xl md:text-8xl font-extrabold tracking-tight leading-[0.95] mb-8 hero-title">
+                        Engineered for <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-charcoal via-charcoal to-accent/60">Scientific Elite.</span>
+                    </h1>
+                    <p class="text-xl text-gray-500 max-w-xl mb-12 hero-reveal leading-relaxed">
+                        RetraLabs delivers pharmaceutical-grade peptides synthesized for the most rigorous research standards. Transparent, pure, and unapologetically premium.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6 hero-reveal">
+                        <a href="#products" class="bg-charcoal text-white px-10 py-5 rounded-full font-bold hover:bg-accent transition-all duration-300 transform hover:scale-105 shadow-xl flex items-center justify-center gap-2 group">
+                            Explore Catalogues
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                        <a href="#quality" class="border border-charcoal/10 px-10 py-5 rounded-full font-bold hover:bg-charcoal/5 transition-all flex items-center justify-center">
+                            Our Quality Protocol
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+                <div class="w-[1px] h-12 bg-charcoal/20 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1/2 bg-accent scroll-line"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quality Section Placeholder Removed (Consolidated) -->
+
+        <!-- Products Section (The Collection Redesigned) -->
+        <section id="products" class="py-40 bg-white relative">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-24 gap-8 scroll-reveal">
+                    <div class="max-w-2xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-[1px] bg-accent"></div>
+                            <span class="text-accent font-bold tracking-[0.3em] uppercase text-[10px]">Curated Synthesis</span>
+                        </div>
+                        <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 text-charcoal">The Collection<span class="text-accent">.</span></h2>
+                        <p class="text-gray-400 text-lg max-w-lg">Engineered for absolute purity. Our compounds represent the pinnacle of current peptide synthesis technology.</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="#catalogues" class="group flex items-center gap-3 text-charcoal font-bold text-sm tracking-widest uppercase border-b border-charcoal/10 pb-2 hover:border-accent transition-all">
+                            Explore All
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-12">
+                    <!-- Product 1: Retatrutide (High-Impact Highlight) -->
+                    <div class="group relative scroll-reveal">
+                        <div class="absolute -inset-4 bg-charcoal/5 rounded-[4rem] scale-95 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700 blur-2xl"></div>
+                        <div class="relative bg-charcoal rounded-[3rem] p-2 border border-white/5 overflow-hidden transition-all duration-700 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.3)] group-hover:-translate-y-4">
+                            <div class="aspect-[4/5] rounded-[2.5rem] bg-gradient-to-br from-[#1a1a1a] to-charcoal overflow-hidden relative mb-8">
+                                <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+                                <!-- Sophisticated Glass Vial Construct (Now in Dark Mode) -->
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <div class="relative w-64 h-64">
+                                        <div class="absolute inset-0 bg-accent/20 rounded-full blur-[60px] animate-pulse"></div>
+                                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-56 bg-white/5 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl overflow-hidden group-hover:scale-110 transition-transform duration-700">
+                                            <div class="absolute bottom-0 left-0 w-full h-[65%] bg-accent/40 animate-wave">
+                                                <div class="absolute top-0 left-0 w-full h-4 bg-white/20 blur-sm"></div>
+                                            </div>
+                                            <div class="absolute top-12 left-4 right-4 h-16 bg-white/10 rounded-lg backdrop-blur-sm border border-white/10 flex flex-col justify-center px-3 gap-1">
+                                                <div class="w-10 h-1.5 bg-accent/60 rounded-full"></div>
+                                                <div class="w-6 h-1 bg-accent/30 rounded-full"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absolute top-8 left-8 flex flex-col gap-2">
+                                    <span class="bg-accent text-charcoal text-[9px] font-bold tracking-[0.2em] px-3 py-1.5 rounded-full uppercase">Flagship Protocol</span>
+                                    <span class="bg-white/10 text-white text-[9px] font-bold tracking-[0.2em] px-3 py-1.5 rounded-full uppercase backdrop-blur-md border border-white/10">99.8% Certified Purity</span>
+                                </div>
+                            </div>
+                            <div class="px-10 pb-10">
+                                <div class="flex justify-between items-end mb-6 text-white">
+                                    <div>
+                                        <h3 class="text-3xl font-black tracking-tighter mb-1">Retatrutide</h3>
+                                        <p class="text-xs font-bold text-gray-500 tracking-widest uppercase">Triple Agonist Construct</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="block text-[10px] font-bold text-accent uppercase tracking-widest mb-1">Starting at</span>
+                                        <span class="text-2xl font-black tracking-tighter">₹11,000</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-500 text-sm leading-relaxed mb-10 line-clamp-2">The most advanced metabolic research compound currently synthesized. Engineered for unprecedented receptor affinity.</p>
+                                <a href="#catalogues" class="flex items-center justify-center w-full bg-accent text-charcoal py-6 rounded-2xl font-bold hover:scale-[1.02] transition-all duration-500 shadow-xl shadow-accent/20">
+                                    Analyze Dosages
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2: Tirzepatide (The Standard Protocol) -->
+                    <div class="group relative scroll-reveal" style="transition-delay: 0.1s;">
+                        <div class="absolute -inset-4 bg-accent/5 rounded-[4rem] scale-95 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700 blur-2xl"></div>
+                        <div class="relative bg-premium rounded-[3rem] p-2 border border-charcoal/5 overflow-hidden transition-all duration-700 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] group-hover:-translate-y-4">
+                            <div class="aspect-[4/5] rounded-[2.5rem] bg-white overflow-hidden relative mb-8 flex items-center justify-center">
+                                <!-- Abstract Helix Visual -->
+                                <svg width="180" height="180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5" class="text-accent/40 animate-spin-slow">
+                                    <circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10M12 22a10 10 0 0 1-10-10"/><path d="M12 6a6 6 0 0 1 6 6M12 18a6 6 0 0 1-6-6"/>
+                                </svg>
+                                <div class="absolute top-8 left-8">
+                                    <span class="bg-charcoal text-white text-[9px] font-bold tracking-[0.2em] px-3 py-1.5 rounded-full uppercase">Q1 2026</span>
+                                </div>
+                            </div>
+                            <div class="px-10 pb-10">
+                                <div class="flex justify-between items-end mb-6">
+                                    <div>
+                                        <h3 class="text-3xl font-black tracking-tighter text-charcoal mb-1">Tirzepatide</h3>
+                                        <p class="text-xs font-bold text-gray-400 tracking-widest uppercase">Dual Agonist Protocol</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="block text-[10px] font-bold text-accent uppercase tracking-widest mb-1">Queue Status</span>
+                                        <span class="text-sm font-bold text-charcoal">Opening Soon</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-10 line-clamp-2">Currently undergoing final molecular stability verification. Advanced weight management pathways.</p>
+                                <button onclick="gsap.to(window, {duration: 1, scrollTo: '#contact'})" class="flex items-center justify-center w-full bg-charcoal text-white py-6 rounded-2xl font-bold hover:bg-accent hover:text-charcoal transition-all duration-500 shadow-xl shadow-charcoal/10">
+                                    Join Pre-Access List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3: Semaglutide (The Minimalist Card) -->
+                    <div class="group relative scroll-reveal" style="transition-delay: 0.2s;">
+                        <div class="relative bg-premium rounded-[3rem] p-2 border border-charcoal/5 overflow-hidden opacity-60">
+                            <div class="aspect-[4/5] rounded-[2.5rem] bg-white/50 flex items-center justify-center mb-8">
+                                <div class="text-charcoal/5">
+                                    <svg width="120" height="120" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                </div>
+                            </div>
+                            <div class="px-10 pb-10">
+                                <h3 class="text-3xl font-black tracking-tighter text-charcoal mb-1">Semaglutide</h3>
+                                <p class="text-xs font-bold text-gray-400 tracking-widest uppercase mb-10">GLP-1 Receptor Agonist</p>
+                                <button class="w-full bg-charcoal/5 text-charcoal/30 py-6 rounded-2xl font-bold cursor-not-allowed uppercase text-xs tracking-widest">
+                                    Pipeline Locked
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Intelligence Section (Retatrutide Education) -->
+        <section id="education" class="py-32 bg-premium relative overflow-hidden">
+            <div class="container mx-auto px-6 md:px-12 relative z-10">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    <div class="scroll-reveal">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-[1px] bg-accent"></div>
+                            <span class="text-accent font-bold tracking-[0.3em] uppercase text-[10px]">Scientific Briefing</span>
+                        </div>
+                        <h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter mb-8">Clinical Analysis: <br><span class="text-accent">Retatrutide.</span></h2>
+                        <p class="text-gray-500 text-lg leading-relaxed mb-8">
+                            Retatrutide (LY3437943) represents a breakthrough in metabolic research as a **Triple Agonist Construct**, targeting GIP, GLP-1, and Glucagon receptors simultaneously.
+                        </p>
+                        
+                        <!-- Clinical Stats Grid -->
+                        <div class="grid grid-cols-2 gap-6 mb-12">
+                            <div class="p-6 bg-white rounded-3xl border border-charcoal/5 shadow-sm">
+                                <div class="text-4xl font-black text-charcoal mb-1">24.2%</div>
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Mean Weight Loss</div>
+                                <p class="text-[10px] mt-2 text-gray-400 leading-tight">Phase 2 trials @ 48 weeks (highest dose)</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-3xl border border-charcoal/5 shadow-sm">
+                                <div class="text-4xl font-black text-charcoal mb-1">Triple</div>
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Receptor Affinity</div>
+                                <p class="text-[10px] mt-2 text-gray-400 leading-tight">GIP, GLP-1, and GCGR multi-pathway activation</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-charcoal text-white rounded-2xl">
+                                <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <p class="text-xs text-gray-400 leading-relaxed">Retatrutide research suggests enhanced energy expenditure through glucagon receptor activation, differentiating it from dual-agonist protocols.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reddit Community Bridge -->
+                    <div class="relative scroll-reveal" style="transition-delay: 0.2s;">
+                        <div class="bg-white rounded-[3rem] p-12 border border-charcoal/5 shadow-2xl relative overflow-hidden group">
+                            <!-- Reddit Brand Visual -->
+                            <div class="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700">
+                                <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+                            </div>
+
+                            <div class="relative z-10">
+                                <div class="w-16 h-16 bg-[#FF4500]/10 rounded-full flex items-center justify-center mb-8">
+                                    <svg class="w-8 h-8 text-[#FF4500]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701z"/></svg>
+                                </div>
+                                <h3 class="text-2xl font-extrabold tracking-tight mb-4">Crowdsourced Research</h3>
+                                <p class="text-gray-500 text-sm leading-relaxed mb-10">
+                                    For real-world laboratory discussions, protocol optimizations, and peer-reviewed dosing analysis, we strongly recommend visiting the Retatrutide research community on Reddit.
+                                </p>
+                                <div class="p-6 bg-premium rounded-2xl border border-charcoal/5 mb-10">
+                                    <div class="text-[10px] font-bold text-accent uppercase tracking-widest mb-2">Target Community</div>
+                                    <div class="text-xl font-black text-charcoal tracking-tight">r/retatrutide</div>
+                                </div>
+                                <a href="https://reddit.com/r/retatrutide" target="_blank" class="flex items-center justify-center gap-3 w-full bg-[#FF4500] text-white py-5 rounded-full font-bold shadow-xl shadow-[#FF4500]/20 hover:scale-105 transition-all">
+                                    Analyze on Reddit
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catalogues Section (Functional & Pipeline) -->
+        <section id="catalogues" class="py-32 bg-white border-t border-charcoal/5">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="max-w-3xl mb-20 scroll-reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-[1px] bg-accent"></div>
+                        <span class="text-accent font-bold tracking-[0.3em] uppercase text-[10px]">Current Inventory</span>
+                    </div>
+                    <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Research Catalogues<span class="text-accent">.</span></h2>
+                    <p class="text-gray-500">Select verified concentrations for your specific laboratory research requirements.</p>
+                </div>
+
+                <!-- Active Catalogue: Retatrutide -->
+                <div class="mb-24">
+                    <div class="flex items-center justify-between mb-12 scroll-reveal">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-charcoal text-accent rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold">Retatrutide Protocol</h3>
+                        </div>
+                        <span class="text-[10px] font-bold text-accent bg-accent/10 px-3 py-1 rounded-full uppercase tracking-widest border border-accent/20">Verified Batch</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- 5mg Card -->
+                        <div class="dosage-card group bg-premium rounded-[2.5rem] p-4 border border-charcoal/5 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 scroll-reveal" data-product="retatrutide" data-dosage="5">
+                            <div class="dosage-label hidden">Retatrutide</div>
+                            <!-- Lab View Visual -->
+                            <div class="relative w-full aspect-video bg-white rounded-3xl mb-6 overflow-hidden flex items-center justify-center border border-charcoal/5">
+                                <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+                                <svg width="60" height="90" viewBox="0 0 40 70" fill="none" class="drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-700">
+                                    <rect x="5" y="10" width="30" height="50" rx="8" fill="white" fill-opacity="0.5" stroke="white" stroke-width="1.5"/>
+                                    <path d="M5 40C5 35 35 35 35 40V55C35 60 5 60 5 55V40Z" fill="#00D2D3" fill-opacity="0.4"/>
+                                    <rect x="10" y="5" width="20" height="5" rx="2" fill="#00D2D3"/>
+                                    <rect x="12" y="20" width="16" height="10" rx="1" fill="white" fill-opacity="0.8"/>
+                                </svg>
+                                <div class="absolute bottom-4 left-4 flex gap-2">
+                                    <div class="bg-charcoal text-white text-[8px] font-bold px-2 py-1 rounded uppercase tracking-tighter">5mg</div>
+                                    <div class="bg-accent text-charcoal text-[8px] font-bold px-2 py-1 rounded uppercase tracking-tighter">In Stock</div>
+                                </div>
+                            </div>
+                            <div class="px-6 pb-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <div>
+                                        <h4 class="text-xl font-black text-charcoal tracking-tight">Retatrutide</h4>
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">5mg * 10 VIALS PER KIT</p>
+                                    </div>
+                                    <div class="dosage-price text-xl font-black text-charcoal">₹11,000</div>
+                                </div>
+                                <button class="btn-dosage w-full bg-charcoal text-white py-4 rounded-xl font-bold hover:bg-accent hover:text-charcoal transition-all duration-300">Add to Research</button>
+                            </div>
+                        </div>
+
+                        <!-- 10mg Card -->
+                        <div class="dosage-card group bg-premium rounded-[2.5rem] p-4 border border-charcoal/5 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 scroll-reveal" data-product="retatrutide" data-dosage="10">
+                            <div class="dosage-label hidden">Retatrutide</div>
+                            <div class="relative w-full aspect-video bg-white rounded-3xl mb-6 overflow-hidden flex items-center justify-center border border-charcoal/5">
+                                <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+                                <svg width="60" height="90" viewBox="0 0 40 70" fill="none" class="drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-700">
+                                    <rect x="5" y="10" width="30" height="50" rx="8" fill="white" fill-opacity="0.5" stroke="white" stroke-width="1.5"/>
+                                    <path d="M5 30C5 25 35 25 35 30V55C35 60 5 60 5 55V30Z" fill="#00D2D3" fill-opacity="0.6"/>
+                                    <rect x="10" y="5" width="20" height="5" rx="2" fill="#00D2D3"/>
+                                    <rect x="12" y="20" width="16" height="10" rx="1" fill="white" fill-opacity="0.8"/>
+                                </svg>
+                                <div class="absolute bottom-4 left-4 flex gap-2">
+                                    <div class="bg-charcoal text-white text-[8px] font-bold px-2 py-1 rounded uppercase tracking-tighter">10mg</div>
+                                    <div class="bg-accent text-charcoal text-[8px] font-bold px-2 py-1 rounded uppercase tracking-tighter">Limited</div>
+                                </div>
+                            </div>
+                            <div class="px-6 pb-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <div>
+                                        <h4 class="text-xl font-black text-charcoal tracking-tight">Retatrutide</h4>
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">10MG * 10 VIALS PER KIT</p>
+                                    </div>
+                                    <div class="dosage-price text-xl font-black text-charcoal">₹18,000</div>
+                                </div>
+                                <button class="btn-dosage w-full bg-charcoal text-white py-4 rounded-xl font-bold hover:bg-accent hover:text-charcoal transition-all duration-300">Add to Research</button>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder for Scale -->
+                        <div class="bg-premium/30 rounded-[2.5rem] p-10 border border-charcoal/5 border-dashed flex flex-col justify-center items-center text-center opacity-40 scroll-reveal">
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
+                                <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            </div>
+                            <div class="text-sm font-bold tracking-widest uppercase text-gray-400">Additional Protocols</div>
+                            <div class="text-xs mt-2">Q2 2026 Batch</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline / Coming Soon Peptides -->
+                <div class="scroll-reveal">
+                    <div class="flex items-center gap-4 mb-12">
+                        <div class="w-10 h-10 bg-premium text-gray-400 rounded-xl flex items-center justify-center border border-charcoal/5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-400">Synthesis Pipeline</h3>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 opacity-60">
+                        <!-- GHK-Cu -->
+                        <div class="bg-premium rounded-3xl p-6 border border-charcoal/5 group relative overflow-hidden">
+                            <div class="absolute top-4 right-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">Q1 2026</div>
+                            <div class="w-12 h-12 bg-white rounded-xl mb-6 flex items-center justify-center shadow-sm">
+                                <svg class="w-6 h-6 text-[#00D2D3]/30" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+                            </div>
+                            <h4 class="font-bold text-charcoal mb-1">GHK-Cu</h4>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">In Stability Testing</p>
+                        </div>
+                        <!-- HGH 191AA -->
+                        <div class="bg-premium rounded-3xl p-6 border border-charcoal/5 group relative overflow-hidden">
+                            <div class="absolute top-4 right-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">Pending</div>
+                            <div class="w-12 h-12 bg-white rounded-xl mb-6 flex items-center justify-center shadow-sm">
+                                <svg class="w-6 h-6 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
+                            </div>
+                            <h4 class="font-bold text-charcoal mb-1">HGH 191AA</h4>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Quality Control</p>
+                        </div>
+                        <!-- IGF-1 LR3 -->
+                        <div class="bg-premium rounded-3xl p-6 border border-charcoal/5 group relative overflow-hidden">
+                            <div class="absolute top-4 right-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">Pipeline</div>
+                            <div class="w-12 h-12 bg-white rounded-xl mb-6 flex items-center justify-center shadow-sm">
+                                <svg class="w-6 h-6 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </div>
+                            <h4 class="font-bold text-charcoal mb-1">IGF-1 LR3</h4>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Synthesis Step 04</p>
+                        </div>
+                        <!-- 5-Amino-1MQ -->
+                        <div class="bg-premium rounded-3xl p-6 border border-charcoal/5 group relative overflow-hidden">
+                            <div class="absolute top-4 right-4 text-[8px] font-bold text-gray-400 uppercase tracking-widest">Q2 2026</div>
+                            <div class="w-12 h-12 bg-white rounded-xl mb-6 flex items-center justify-center shadow-sm">
+                                <svg class="w-6 h-6 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <h4 class="font-bold text-charcoal mb-1">5-Amino-1MQ</h4>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Awaiting Raw Batch</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Disclaimer -->
+        <section class="py-24 bg-white">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="max-w-5xl mx-auto bg-premium border border-charcoal/5 rounded-[3rem] p-12 md:p-20 relative overflow-hidden scroll-reveal">
+                    <div class="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
+                        <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.45l8.27 14.1H3.73L12 5.45zM11 16h2v2h-2v-2zm0-7h2v5h-2V9z"/></svg>
+                    </div>
+                    <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
+                        <div class="w-20 h-20 bg-charcoal text-accent rounded-3xl flex items-center justify-center shrink-0 shadow-2xl rotate-3">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.673.337a4 4 0 01-2.574.345l-2.387-.477a2 2 0 00-1.022.547l-1.1 1.1a2 2 0 00.583 3.298l2.12.707a8 8 0 005.656 0l2.12-.707a2 2 0 00.583-3.298l-1.1-1.1z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v3m0 0a3 3 0 100 6 3 3 0 000-6zm-4 7l-1.5 1.5M16 10l1.5 1.5"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-extrabold tracking-tight mb-4">Strict Research Protocol<span class="text-accent">.</span></h4>
+                            <p class="text-gray-500 leading-relaxed mb-6">
+                                RetraLabs maintains the highest ethical standards in biotech distribution. All compounds listed are strictly for <span class="text-charcoal font-bold">In-Vitro Laboratory Research</span>. 
+                            </p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Non-Human Use</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Vetted Facilities Only</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-20 bg-premium" id="contact">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="grid md:grid-cols-4 gap-12 mb-20">
+                    <div class="col-span-2">
+                        <div class="text-2xl font-extrabold tracking-tighter flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-charcoal rounded-xl flex items-center justify-center shadow-lg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 22V12" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 7L12 12L3 7" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="12" r="3" fill="#00D2D3" fill-opacity="0.3"/>
+                                </svg>
+                            </div>
+                            <span class="text-charcoal uppercase tracking-[0.1em] text-xl">Retra<span class="font-light">Labs</span><span class="text-accent">.</span></span>
+                        </div>
+                        <p class="text-gray-500 max-w-sm mb-8 leading-relaxed">
+                            The definitive source for pharmaceutical-grade research compounds. 
+                            Transparency is our synthesis. Elite is our standard.
+                        </p>
+                        <div class="flex gap-4">
+                            <!-- <a href="#" class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-all shadow-sm"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                            <a href="#" class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-all shadow-sm"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a> -->
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold uppercase text-xs tracking-widest mb-6">Navigation</h4>
+                        <ul class="space-y-4 text-gray-500 text-sm">
+                            <li><a href="#manifesto" class="hover:text-accent transition-colors">About Us</a></li>
+                            <li><a href="#products" class="hover:text-accent transition-colors">Catalogues</a></li>
+                            <!-- <li><a href="#" class="hover:text-accent transition-colors">Lab Results</a></li> -->
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold uppercase text-xs tracking-widest mb-6">Connect</h4>
+                        <ul class="space-y-4 text-gray-500 text-sm">
+                            <li><a href="mailto:research@retralabs.com" class="hover:text-accent transition-colors">support@retralabs.com</a></li>
+                            <li><a href="https://wa.me/918217824384" class="hover:text-accent transition-colors">+91 8217 824 384</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pt-8 border-top border-charcoal/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">© 2026 RETRALABS . ALL RIGHTS RESERVED.</p>
+                    <div class="flex gap-8">
+                        <a href="#" class="text-[10px] text-gray-400 font-bold tracking-widest uppercase hover:text-accent">Terms</a>
+                        <a href="#" class="text-[10px] text-gray-400 font-bold tracking-widest uppercase hover:text-accent">Privacy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+</body>
+</html>

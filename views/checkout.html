@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | RetraLabs</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300D2D3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2L3 7v10l9 5 9-5V7l-9-5z'/><path d='M12 22V12'/><path d='M21 7l-9 5-9-5'/><circle cx='12' cy='12' r='3' fill='%2300D2D3' fill-opacity='0.3'/></svg>">
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: '#0A0A0A',
+                        accent: '#00D2D3',
+                        premium: '#F5F5F7',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-premium text-charcoal font-sans antialiased">
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="fixed w-4 h-4 bg-accent rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-premium/80 backdrop-blur-xl border-b border-charcoal/5 py-6" id="navbar">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold tracking-tighter flex items-center gap-3">
+                <div class="w-10 h-10 bg-charcoal rounded-xl flex items-center justify-center shadow-lg transform -rotate-6">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 22V12" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 7L12 12L3 7" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="12" r="3" fill="#00D2D3" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <span class="text-charcoal uppercase tracking-[0.1em] text-xl">Retra<span class="font-light">Labs</span><span class="text-accent">.</span></span>
+            </a>
+            
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors">Home</a>
+                <a href="/cart" class="text-sm font-bold uppercase tracking-widest hover:text-accent transition-colors">Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-40 pb-20">
+        <div class="container mx-auto px-6 md:px-12 max-w-5xl">
+            <header class="mb-12 scroll-reveal">
+                <h1 class="text-5xl font-extrabold tracking-tight mb-2">Checkout<span class="text-accent">.</span></h1>
+                <p class="text-gray-500">Secure payment and research confirmation.</p>
+            </header>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Order Summary -->
+                <div class="scroll-reveal">
+                    <div class="bg-white rounded-[2.5rem] p-10 border border-charcoal/5 shadow-sm sticky top-32">
+                        <h2 class="text-2xl font-extrabold tracking-tight mb-8">Order Summary</h2>
+                        <div id="order-items" class="space-y-6 mb-8">
+                    <!-- Order items will be populated by JavaScript -->
+                </div>
+                        <div class="pt-8 border-t border-charcoal/5 flex justify-between items-end">
+                            <div>
+                                <span class="block text-accent font-bold uppercase tracking-widest text-[10px] mb-2">Total Amount</span>
+                                <div id="order-total" class="text-5xl font-black tracking-tighter">₹0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="space-y-8 scroll-reveal" style="transition-delay: 0.1s;">
+                    <!-- Payment Status Notification -->
+                    <div class="bg-accent/5 border border-accent/20 rounded-[2.5rem] p-10 relative overflow-hidden">
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px]">Payment Protocol Update</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-charcoal mb-4">Direct WhatsApp Fulfillment</h3>
+                            <div class="space-y-4 text-sm text-gray-500 leading-relaxed">
+                                <p>At the moment, third-party payment gateways (such as Razorpay and similar providers) do not permit transactions related to research peptides under their current policies.</p>
+                                <p>While this isn’t ideal, it means that we’re <strong>temporarily accepting orders exclusively via WhatsApp</strong> to ensure compliance and uninterrupted service.</p>
+                                <p>We appreciate your understanding and are actively working toward enabling standard online payments as policies evolve.</p>
+            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Protocol -->
+                    <div class="bg-charcoal text-white rounded-[2.5rem] p-10 shadow-2xl overflow-hidden relative opacity-50">
+                        <div class="absolute inset-0 bg-charcoal/80 backdrop-blur-sm z-20 flex items-center justify-center p-8 text-center">
+                            <p class="text-xs font-bold tracking-widest uppercase text-accent">Gateways Restricted<br><span class="text-white opacity-60">Use WhatsApp for secure link</span></p>
+                        </div>
+                        <div class="relative z-10">
+                            <h2 class="text-2xl font-extrabold tracking-tight mb-8">Transfer Protocol</h2>
+                            <div class="space-y-6">
+                                <div class="p-6 bg-white/5 rounded-2xl border border-white/10 group">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Account Transfer</span>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500">Account Holder</span>
+                                            <span class="font-bold">RetraLabs</span>
+                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500">Number</span>
+                                            <span class="font-mono font-bold text-accent">LOCKED</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- WhatsApp Confirmation -->
+                    <div class="bg-white rounded-[2.5rem] p-10 border-2 border-accent shadow-xl overflow-hidden relative group">
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-extrabold tracking-tight mb-4">Finalize via Research Desk</h3>
+                            <p class="text-gray-500 text-sm mb-8">Click below to share your order details with our team. We will provide secure payment instructions directly via WhatsApp.</p>
+                            <a href="https://wa.me/918217824384" target="_blank" id="whatsapp-checkout-btn" class="flex items-center justify-center gap-4 bg-[#25D366] text-white py-6 rounded-full font-bold shadow-xl shadow-[#25D366]/20 hover:scale-105 transition-all">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                Proceed to WhatsApp Checkout
+                            </a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- Instructions -->
+                    <div class="p-8 bg-charcoal/5 rounded-[2rem] border border-charcoal/5">
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] mb-4">Protocol Details</h4>
+                        <ul class="space-y-3 text-xs text-gray-400 leading-relaxed">
+                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Transfer the exact amount shown.</li>
+                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Capture a clear screenshot of successful transaction.</li>
+                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Confirmation provided within 24 hours of receipt.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+    <script>
+        function renderOrderSummary() {
+            const orderItems = document.getElementById('order-items');
+            const orderTotal = document.getElementById('order-total');
+            
+            if (!window.cart || window.cart.items.length === 0) {
+                window.location.href = '/cart';
+                return;
+            }
+
+            let itemsHTML = '';
+            window.cart.items.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                itemsHTML += `
+                    <div class="flex justify-between items-start gap-4">
+                        <div>
+                            <div class="font-bold text-lg">${item.productName}</div>
+                            <div class="text-xs font-bold tracking-[0.1em] text-gray-400 uppercase">
+                                ${item.quantity} × ${item.dosage}mg Kit
+                            </div>
+                        </div>
+                        <div class="font-bold text-lg tracking-tight">₹${itemTotal.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            itemsHTML += `
+                <div class="flex justify-between items-center pt-4 border-t border-charcoal/5">
+                    <div class="text-gray-400 text-sm">Research Logistics</div>
+                    <div class="font-bold">₹${window.cart.deliveryCharge.toLocaleString()}</div>
+                </div>
+            `;
+
+            orderItems.innerHTML = itemsHTML;
+            orderTotal.textContent = `₹${window.cart.getTotal().toLocaleString()}`;
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent.trim();
+            const btn = event.target;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                    const originalText = btn.textContent;
+                btn.textContent = 'COPIED';
+                btn.classList.add('text-green-500');
+                    
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                    btn.classList.remove('text-green-500');
+                        }, 2000);
+                    }).catch(() => {
+                // Fallback
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                btn.textContent = 'COPIED';
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+        renderOrderSummary();
+        });
+    </script>
+</body>
+</html>
+
