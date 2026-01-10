@@ -14,7 +14,7 @@ RUN chown -R nextjs:nodejs /app
 # Dependencies stage
 FROM base AS deps
 COPY package*.json ./
-RUN npm ci --only=production --ignore-scripts && \
+RUN npm install --omit=dev --ignore-scripts && \
     npm cache clean --force
 
 # Build stage (if you add build steps later)
