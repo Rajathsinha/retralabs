@@ -50,11 +50,13 @@ echo -e "${BLUE}📥 Cloning repository...${NC}"
 # git clone https://github.com/yourusername/retralabs.git .
 # For now, we'll assume the code is already there or will be deployed via webhook
 
-# Copy systemd service
-echo -e "${BLUE}⚙️ Installing systemd service...${NC}"
+# Copy systemd services
+echo -e "${BLUE}⚙️ Installing systemd services...${NC}"
 cp retralabs.service /etc/systemd/system/
+cp retralabs-webhook.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable retralabs
+systemctl enable retralabs-webhook
 
 # Create environment file
 echo -e "${BLUE}🔧 Creating environment configuration...${NC}"
@@ -96,6 +98,16 @@ server {
         proxy_cache_bypass \$http_upgrade;
     }
 
+    # Deploy webhook (host service on port 9000)
+    location = /webhook/deploy {
+        proxy_pass http://127.0.0.1:9000/webhook/deploy;
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+
     # Static files caching
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
         expires 1y;
@@ -115,6 +127,7 @@ nginx -t
 echo -e "${BLUE}▶️ Starting services...${NC}"
 systemctl start nginx
 systemctl start retralabs
+systemctl start retralabs-webhook
 
 # Setup SSL if domain is provided and not localhost
 if [ "$DOMAIN" != "localhost" ]; then

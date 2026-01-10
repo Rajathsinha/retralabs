@@ -82,12 +82,16 @@ The `docker-compose.yml` includes:
 - Volume mounts for logs
 - Automatic restarts
 
-### Systemd Service
+### Systemd Services
 
 The `retralabs.service` manages:
 - Automatic startup on boot
 - Proper container lifecycle
 - Service restart on failure
+
+The `retralabs-webhook.service` manages:
+- Host-level webhook listener (runs outside Docker)
+- Triggers `deploy.sh` on the VPS host
 
 ## 🛠️ Available Commands
 
@@ -114,6 +118,9 @@ sudo systemctl status retralabs    # Check service status
 sudo systemctl restart retralabs   # Restart service
 sudo systemctl stop retralabs      # Stop service
 sudo systemctl start retralabs     # Start service
+
+sudo systemctl status retralabs-webhook   # Check webhook listener
+sudo systemctl restart retralabs-webhook  # Restart webhook listener
 ```
 
 ## 🔍 Monitoring & Troubleshooting
@@ -129,6 +136,7 @@ tail -f deploy.log
 
 # System logs
 sudo journalctl -u retralabs -f
+sudo journalctl -u retralabs-webhook -f
 ```
 
 ### Health Checks
