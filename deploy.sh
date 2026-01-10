@@ -53,9 +53,13 @@ pre_deployment_checks() {
         error_exit "Docker is not running or not accessible"
     fi
 
-    # Check if docker-compose is available
-    if ! command -v docker-compose >/dev/null 2>&1; then
-        error_exit "docker-compose command not found"
+    # Determine compose command (Docker Compose v2: `docker compose`, v1: `docker-compose`)
+    if command -v docker-compose >/dev/null 2>&1; then
+        export COMPOSE_CMD="docker-compose"
+    elif docker compose version >/dev/null 2>&1; then
+        export COMPOSE_CMD="docker compose"
+    else
+        error_exit "Docker Compose not found (expected docker-compose or docker compose)"
     fi
 
     success "Pre-deployment checks passed"
@@ -100,7 +104,7 @@ pull_code() {
 stop_containers() {
     log "Stopping existing containers..."
 
-    docker-compose down || warning "Could not stop containers gracefully"
+    $COMPOSE_CMD down || warning "Could not stop containers gracefully"
 
     success "Containers stopped"
 }
@@ -110,10 +114,10 @@ build_and_start() {
     log "Building and starting containers..."
 
     # Build with no cache to ensure fresh build
-    docker-compose build --no-cache
+    $COMPOSE_CMD build --no-cache
 
     # Start containers
-    docker-compose up -d
+    $COMPOSE_CMD up -d
 
     success "Containers built and started"
 }
@@ -126,7 +130,7 @@ health_check() {
     sleep 10
 
     # Check if container is running
-    if ! docker-compose ps | grep -q "Up"; then
+    if ! $COMPOSE_CMD ps | grep -q "Up"; then
         error_exit "Container failed to start"
     fi
 
@@ -135,7 +139,8 @@ health_check() {
     RETRY_COUNT=0
 
     while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-        if curl -f -s http://localhost/health >/dev/null 2>&1; then
+        # Prefer localhost:3000 (private behind nginx); fall back to :80 if mapped.
+        if curl -f -s http://127.0.0.1:${PORT:-3000}/health >/dev/null 2>&1 || curl -f -s http://127.0.0.1/health >/dev/null 2>&1; then
             success "Health check passed"
             return 0
         fi
@@ -169,14 +174,14 @@ rollback() {
     log "Starting rollback..."
 
     # Stop current containers
-    docker-compose down || true
+    $COMPOSE_CMD down || true
 
     # Restore from backup if available
     if [ -f "$BACKUP_FILE" ]; then
         log "Restoring from backup..."
         rm -rf * .[^.]*
         tar -xzf "$BACKUP_FILE"
-        docker-compose up -d
+        $COMPOSE_CMD up -d
         success "Rollback completed"
     else
         error_exit "No backup available for rollback"
@@ -237,7 +242,11 @@ case "${1:-}" in
         ;;
     "status")
         log "Checking deployment status..."
-        docker-compose ps
+        if command -v docker-compose >/dev/null 2>&1; then
+            docker-compose ps
+        else
+            docker compose ps
+        fi
         ;;
     *)
         main

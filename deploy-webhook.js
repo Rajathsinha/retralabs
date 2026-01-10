@@ -16,7 +16,8 @@ const { spawn } = require("child_process");
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 const APP_DIR = process.env.APP_DIR || "/opt/retralabs";
 const WEBHOOK_PORT = Number(process.env.WEBHOOK_PORT || 9000);
-const WEBHOOK_HOST = process.env.WEBHOOK_HOST || "0.0.0.0";
+// Default to localhost; expose publicly only if you must.
+const WEBHOOK_HOST = process.env.WEBHOOK_HOST || "127.0.0.1";
 
 if (!WEBHOOK_SECRET) {
   console.error("WEBHOOK_SECRET is required");
