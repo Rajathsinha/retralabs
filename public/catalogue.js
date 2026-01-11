@@ -12,7 +12,8 @@
       subtitle: "Triple agonist — premium research grade",
       badges: ["FLAGSHIP", "MOST POPULAR"],
       rating: 4.8,
-      imageSrc: "/images/products/retatrutide.svg",
+      // Use your real JPGs (no SVG)
+      imageSrc: "/images/products/image.jpg",
       variants: [
         { dosage: 5, price: 11000, status: "IN STOCK" },
         { dosage: 10, price: 18000, status: "LIMITED" },
@@ -44,7 +45,7 @@
       subtitle: "Pharmaceutical-grade analogue",
       badges: ["FLAGSHIP"],
       rating: 4.8,
-      imageSrc: "/images/products/igf-1-lr3.svg",
+      imageSrc: "/images/products/IGF-1-LR3.jpg",
       variants: [],
       comingSoon: true,
     },
@@ -54,7 +55,7 @@
       subtitle: "Dual agonist — queue opening soon",
       badges: ["FLAGSHIP"],
       rating: 4.8,
-      imageSrc: "/images/products/tirzepatide.svg",
+      imageSrc: "/images/products/Tirzepatide.jpg",
       variants: [],
       comingSoon: true,
     },

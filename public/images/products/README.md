@@ -1,18 +1,10 @@
 ## Product images for the catalogue
 
-Place product images here.
+Place product images here (recommended: **JPG** or **WEBP**, ~1200×800, landscape).
 
-This repo includes default **SVG** product images so the catalogue looks good out-of-the-box.
-You can replace them with real photos (recommended: **WEBP**, ~1200×800, landscape).
+The catalogue currently uses filenames configured in `public/catalogue.js` (`imageSrc` fields).
 
-The catalogue currently uses these filenames by default:
-- `retatrutide.svg`
-- `ghk-cu.svg`
-- `hgh-191aa.svg`
-- `igf-1-lr3.svg`
-- `tirzepatide.svg`
-
-If you want to use `.webp` photos instead, add them and update `public/catalogue.js` (`imageSrc` fields).
+Tip: If you add a `.webp` with the same base name, the site will prefer it automatically.
 
 After adding/replacing images:
 1. Commit + push to GitHub
