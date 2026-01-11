@@ -76,31 +76,55 @@
     return `<span class="${cls} text-[10px] font-black tracking-widest px-3 py-1.5 rounded-full">${text}</span>`;
   }
 
-  function imageSvg() {
+  function imageSvg(label = "RetraLabs") {
     return `
       <svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-        <rect x="0" y="0" width="240" height="160" rx="24" fill="white"/>
-        <circle cx="120" cy="80" r="54" fill="#00D2D3" fill-opacity="0.10"/>
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="240" y2="160" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFFFFF"/>
+            <stop offset="1" stop-color="#F5F5F7"/>
+          </linearGradient>
+          <linearGradient id="glow" x1="60" y1="30" x2="180" y2="130" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#00D2D3" stop-opacity="0.18"/>
+            <stop offset="1" stop-color="#00D2D3" stop-opacity="0.04"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="240" height="160" rx="24" fill="url(#bg)"/>
+        <circle cx="120" cy="80" r="60" fill="url(#glow)"/>
         <rect x="104" y="40" width="32" height="80" rx="12" fill="#0A0A0A" fill-opacity="0.06" stroke="#0A0A0A" stroke-opacity="0.08"/>
         <path d="M104 82c0-6 32-6 32 0v22c0 6-32 6-32 0V82Z" fill="#00D2D3" fill-opacity="0.35"/>
         <rect x="108" y="34" width="24" height="8" rx="4" fill="#00D2D3"/>
+        <text x="120" y="146" text-anchor="middle" fill="#0A0A0A" fill-opacity="0.35" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="10" font-weight="800" letter-spacing="2">
+          ${String(label).toUpperCase()}
+        </text>
       </svg>
     `;
   }
 
   function renderImage(p) {
-    // Prefer real product photo if present; otherwise fall back to vector placeholder.
-    if (p.imageSrc) {
-      return `
+    // Always render a placeholder. If image exists, it sits above and hides itself on error.
+    const placeholder = `
+      <div class="absolute inset-0">
+        ${imageSvg(p.name)}
+      </div>
+    `;
+
+    if (!p.imageSrc) {
+      return `<div class="relative w-full h-full">${placeholder}</div>`;
+    }
+
+    return `
+      <div class="relative w-full h-full">
+        ${placeholder}
         <img
           src="${p.imageSrc}"
           alt="${p.name}"
-          class="w-full h-full object-cover"
+          class="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
+          onerror="this.style.display='none'"
         />
-      `;
-    }
-    return imageSvg();
+      </div>
+    `;
   }
 
   function renderCard(p) {
@@ -143,7 +167,7 @@
     return `
       <div class="product-card bg-white rounded-[2rem] border border-charcoal/10 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
         <div class="relative aspect-[4/3] bg-white p-4">
-          <div class="absolute top-4 left-4 flex gap-2">${badgesHtml}</div>
+          <div class="absolute top-4 left-4 right-16 flex flex-wrap gap-2 z-10">${badgesHtml}</div>
           ${ratingHtml}
           <div class="w-full h-full rounded-[1.5rem] overflow-hidden border border-charcoal/5">
             ${renderImage(p)}
