@@ -152,7 +152,9 @@
       ? `<span class="text-xs text-gray-400 font-bold">${Math.max(variantsCount, 1)} variants</span>`
       : `<span class="text-xs text-gray-400 font-bold">${variantsCount} variants</span>`;
 
-    const priceText = isComingSoon ? "Coming soon" : "1100 rs / vial";
+    const priceText = isComingSoon
+      ? "Coming soon"
+      : `${fmtINR(firstPrice)} per kit`;
 
     return `
       <div class="catalogue-card">
