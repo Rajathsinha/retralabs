@@ -114,23 +114,16 @@
       return `<div class="relative w-full h-full">${placeholder}</div>`;
     }
 
-    // Use <picture> so you can later add webp without changing code:
-    // if a .webp exists with the same base name, it'll be preferred.
-    const webpSrc = p.imageSrc.replace(/\.(png|jpe?g|svg)$/i, ".webp");
-
     return `
       <div class="relative w-full h-full">
         ${placeholder}
-        <picture>
-          <source srcset="${webpSrc}" type="image/webp" />
-          <img
-            src="${p.imageSrc}"
-            alt="${p.name}"
-            class="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          />
-        </picture>
+        <img
+          src="${p.imageSrc}"
+          alt="${p.name}"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        />
       </div>
     `;
   }
