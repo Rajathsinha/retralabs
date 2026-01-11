@@ -24,7 +24,7 @@
       subtitle: "Premium peptide — stability verified",
       badges: ["FLAGSHIP"],
       rating: 4.8,
-      imageSrc: "/images/products/ghk-cu.svg",
+      imageSrc: "/images/products/ghk-cu.jpg",
       variants: [],
       comingSoon: true,
     },
@@ -34,7 +34,7 @@
       subtitle: "Somatropin — standard growth hormone",
       badges: ["FLAGSHIP"],
       rating: 4.8,
-      imageSrc: "/images/products/hgh-191aa.svg",
+      imageSrc: "/images/products/HGH-191aa.jpg",
       variants: [],
       comingSoon: true,
     },
@@ -113,16 +113,23 @@
       return `<div class="relative w-full h-full">${placeholder}</div>`;
     }
 
+    // Use <picture> so you can later add webp without changing code:
+    // if a .webp exists with the same base name, it'll be preferred.
+    const webpSrc = p.imageSrc.replace(/\.(png|jpe?g|svg)$/i, ".webp");
+
     return `
       <div class="relative w-full h-full">
         ${placeholder}
-        <img
-          src="${p.imageSrc}"
-          alt="${p.name}"
-          class="absolute inset-0 w-full h-full object-cover"
-          loading="lazy"
-          onerror="this.style.display='none'"
-        />
+        <picture>
+          <source srcset="${webpSrc}" type="image/webp" />
+          <img
+            src="${p.imageSrc}"
+            alt="${p.name}"
+            class="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          />
+        </picture>
       </div>
     `;
   }
