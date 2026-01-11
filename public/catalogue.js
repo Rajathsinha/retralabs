@@ -12,6 +12,7 @@
       subtitle: "Triple agonist — premium research grade",
       badges: ["FLAGSHIP", "MOST POPULAR"],
       rating: 4.8,
+      imageSrc: "/images/products/retatrutide.webp",
       variants: [
         { dosage: 5, price: 11000, status: "IN STOCK" },
         { dosage: 10, price: 18000, status: "LIMITED" },
@@ -23,6 +24,7 @@
       subtitle: "Premium peptide — stability verified",
       badges: ["FLAGSHIP"],
       rating: 4.8,
+      imageSrc: "/images/products/ghk-cu.webp",
       variants: [],
       comingSoon: true,
     },
@@ -32,6 +34,7 @@
       subtitle: "Somatropin — standard growth hormone",
       badges: ["FLAGSHIP"],
       rating: 4.8,
+      imageSrc: "/images/products/hgh-191aa.webp",
       variants: [],
       comingSoon: true,
     },
@@ -41,6 +44,7 @@
       subtitle: "Pharmaceutical-grade analogue",
       badges: ["FLAGSHIP"],
       rating: 4.8,
+      imageSrc: "/images/products/igf-1-lr3.webp",
       variants: [],
       comingSoon: true,
     },
@@ -50,6 +54,7 @@
       subtitle: "Dual agonist — queue opening soon",
       badges: ["FLAGSHIP"],
       rating: 4.8,
+      imageSrc: "/images/products/tirzepatide.webp",
       variants: [],
       comingSoon: true,
     },
@@ -81,6 +86,21 @@
         <rect x="108" y="34" width="24" height="8" rx="4" fill="#00D2D3"/>
       </svg>
     `;
+  }
+
+  function renderImage(p) {
+    // Prefer real product photo if present; otherwise fall back to vector placeholder.
+    if (p.imageSrc) {
+      return `
+        <img
+          src="${p.imageSrc}"
+          alt="${p.name}"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      `;
+    }
+    return imageSvg();
   }
 
   function renderCard(p) {
@@ -126,7 +146,7 @@
           <div class="absolute top-4 left-4 flex gap-2">${badgesHtml}</div>
           ${ratingHtml}
           <div class="w-full h-full rounded-[1.5rem] overflow-hidden border border-charcoal/5">
-            ${imageSvg()}
+            ${renderImage(p)}
           </div>
         </div>
         <div class="p-6">
