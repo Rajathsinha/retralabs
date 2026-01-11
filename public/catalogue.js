@@ -13,7 +13,7 @@
       badges: ["FLAGSHIP", "MOST POPULAR"],
       rating: 4.8,
       // Use your real JPGs (no SVG)
-      imageSrc: "/images/products/image.jpg",
+      imageSrc: "/images/products/Retatrutide.jpg",
       variants: [
         { dosage: 5, price: 11000, status: "IN STOCK" },
         { dosage: 10, price: 18000, status: "LIMITED" },
