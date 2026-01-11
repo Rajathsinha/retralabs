@@ -98,6 +98,116 @@ nav.scrolled {
     }
 }
 
+.catalogue-card {
+    background: linear-gradient(180deg, #fefefe, #f5f7fb);
+    border-radius: 2rem;
+    border: 1px solid rgba(10, 10, 10, 0.05);
+    box-shadow: 0 28px 45px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+}
+
+.catalogue-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(circle at top right, rgba(0, 210, 211, 0.15), transparent 35%);
+}
+
+.catalogue-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 40px 70px rgba(0, 0, 0, 0.12);
+}
+
+.catalogue-card-media {
+    position: relative;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 210, 211, 0.12), rgba(245, 247, 251, 0.8));
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.catalogue-card-media img {
+    border-radius: 1.5rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+}
+
+.catalogue-card-body {
+    padding: 28px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.catalogue-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.catalogue-card-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+}
+
+.catalogue-card-subtitle {
+    font-size: 0.95rem;
+    color: #5b5b5b;
+}
+
+.catalogue-card-tags span {
+    font-size: 0.8rem;
+    color: #7a7a7a;
+    margin-top: 4px;
+    display: inline-block;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+}
+
+.catalogue-card-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    margin-top: 12px;
+}
+
+.btn-product-details {
+    margin-top: 12px;
+    border: none;
+    background: #00d2d3;
+    color: #0a0a0a;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    padding: 14px 0;
+    border-radius: 1.3rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-product-details:disabled {
+    background: #e5e5e5;
+    color: #a5a5a5;
+    cursor: not-allowed;
+}
+
+.btn-product-details:not(:disabled):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
 /* Cart toast (used by public/cart.js) */
 .cart-notification {
     position: fixed;

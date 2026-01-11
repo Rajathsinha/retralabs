@@ -152,42 +152,28 @@
       ? `<span class="text-xs text-gray-400 font-bold">${Math.max(variantsCount, 1)} variants</span>`
       : `<span class="text-xs text-gray-400 font-bold">${variantsCount} variants</span>`;
 
-    const priceBox = isComingSoon
-      ? `<div class="bg-premium rounded-2xl p-5 border border-charcoal/10">
-           <div class="text-gray-400 font-black text-2xl">Coming soon</div>
-           <div class="text-[11px] text-gray-400 mt-1">10 vials per kit • volume discounts</div>
-         </div>`
-      : `<div class="bg-premium rounded-2xl p-5 border border-charcoal/10">
-           <div class="flex items-end gap-2">
-             <div class="text-accent font-black text-3xl">${fmtINR(perVial)}</div>
-             <div class="text-sm text-gray-500 font-bold pb-1">/ vial</div>
-           </div>
-           <div class="text-[11px] text-gray-400 mt-1">10 vials per kit • volume discounts</div>
-         </div>`;
+    const priceText = isComingSoon ? "Coming soon" : "1100 rs / vial";
 
     return `
-      <div class="product-card bg-white rounded-[2rem] border border-charcoal/10 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
-        <div class="relative aspect-[4/3] bg-white p-4">
-          <div class="absolute top-4 left-4 right-16 flex flex-wrap gap-2 z-10">${badgesHtml}</div>
-          ${ratingHtml}
-          <div class="w-full h-full rounded-[1.5rem] overflow-hidden border border-charcoal/5">
-            ${renderImage(p)}
-          </div>
+      <div class="catalogue-card">
+        <div class="catalogue-card-media">
+          ${renderImage(p)}
         </div>
-        <div class="p-6">
-          <div class="flex items-center gap-2 mb-2">
-            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 7h14M5 17h14"/></svg>
-            ${variantsLabel}
+        <div class="catalogue-card-body">
+          <div class="catalogue-card-meta">
+            ${badgesHtml}
+            ${ratingHtml}
           </div>
-          <div class="text-2xl font-black tracking-tight">${p.name}</div>
-          <div class="text-sm text-gray-500 mt-1 line-clamp-2">${p.subtitle || ""}</div>
-
-          <div class="mt-5">
-            ${priceBox}
+          <div class="catalogue-card-title">${p.name}</div>
+          <div class="catalogue-card-subtitle">${p.subtitle || ""}</div>
+          <div class="catalogue-card-tags">
+            <span>${variantsLabel}</span>
           </div>
-
+          <div class="catalogue-card-price">
+            <span>${priceText}</span>
+          </div>
           <button
-            class="btn-product-details mt-5 w-full py-4 rounded-xl font-black tracking-wide ${isComingSoon ? "bg-charcoal/10 text-charcoal/40 cursor-not-allowed" : "bg-accent text-charcoal hover:brightness-95"} transition-all"
+            class="btn-product-details"
             data-product-key="${p.key}"
             ${isComingSoon ? "disabled" : ""}
           >
