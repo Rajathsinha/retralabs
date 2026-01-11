@@ -109,6 +109,23 @@ if (typeof window !== 'undefined') {
 // Add to cart button handlers
 if (typeof document !== 'undefined') {
     document.addEventListener('click', (e) => {
+        const addBtn = e.target.closest?.('.btn-add-to-research');
+        if (addBtn && !addBtn.disabled) {
+            e.preventDefault();
+            if (!window.cart) return;
+
+            const productKey = addBtn.getAttribute('data-product-key');
+            const productName = addBtn.getAttribute('data-product-name') || 'Peptide';
+            const dosage = parseInt(addBtn.getAttribute('data-dosage') || '0', 10);
+            const price = parseInt(addBtn.getAttribute('data-price') || '0', 10);
+
+            if (!productKey || !dosage || !price) return;
+
+            window.cart.addItem(productKey, dosage, price, productName);
+            window.location.href = '/cart';
+            return;
+        }
+
         if (e.target.classList.contains('btn-dosage') && !e.target.disabled) {
             e.preventDefault();
             const card = e.target.closest('.dosage-card');

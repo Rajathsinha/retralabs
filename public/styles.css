@@ -98,6 +98,33 @@ nav.scrolled {
     }
 }
 
+/* Cart toast (used by public/cart.js) */
+.cart-notification {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: rgba(10, 10, 10, 0.9);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 9999;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.cart-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
 /* GSAP Reveal Wrappers */
 .reveal-wrapper {
     position: relative;
