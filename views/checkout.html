@@ -71,81 +71,85 @@
                         <div id="order-items" class="space-y-6 mb-8">
                     <!-- Order items will be populated by JavaScript -->
                 </div>
-                        <div class="pt-8 border-t border-charcoal/5 flex justify-between items-end">
-                            <div>
-                                <span class="block text-accent font-bold uppercase tracking-widest text-[10px] mb-2">Total Amount</span>
-                                <div id="order-total" class="text-5xl font-black tracking-tighter">₹0</div>
+                        <div class="pt-8 border-t border-charcoal/5 space-y-3">
+                            <div id="cod-fee-line" class="hidden flex justify-between text-sm">
+                                <span class="text-gray-400">COD Handling Fee</span>
+                                <span id="cod-fee-amount" class="font-bold">₹0</span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment Details -->
-                <div class="space-y-8 scroll-reveal" style="transition-delay: 0.1s;">
-                    <!-- Payment Status Notification -->
-                    <div class="bg-accent/5 border border-accent/20 rounded-[2.5rem] p-10 relative overflow-hidden">
-                        <div class="relative z-10">
-                            <div class="flex items-center gap-3 mb-6">
-                                <div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px]">Payment Protocol Update</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-charcoal mb-4">Direct WhatsApp Fulfillment</h3>
-                            <div class="space-y-4 text-sm text-gray-500 leading-relaxed">
-                                <p>At the moment, third-party payment gateways (such as Razorpay and similar providers) do not permit transactions related to research peptides under their current policies.</p>
-                                <p>While this isn’t ideal, it means that we’re <strong>temporarily accepting orders exclusively via WhatsApp</strong> to ensure compliance and uninterrupted service.</p>
-                                <p>We appreciate your understanding and are actively working toward enabling standard online payments as policies evolve.</p>
-            </div>
-                        </div>
-                    </div>
-
-                    <!-- Transfer Protocol -->
-                    <div class="bg-charcoal text-white rounded-[2.5rem] p-10 shadow-2xl overflow-hidden relative opacity-50">
-                        <div class="absolute inset-0 bg-charcoal/80 backdrop-blur-sm z-20 flex items-center justify-center p-8 text-center">
-                            <p class="text-xs font-bold tracking-widest uppercase text-accent">Gateways Restricted<br><span class="text-white opacity-60">Use WhatsApp for secure link</span></p>
-                        </div>
-                        <div class="relative z-10">
-                            <h2 class="text-2xl font-extrabold tracking-tight mb-8">Transfer Protocol</h2>
-                            <div class="space-y-6">
-                                <div class="p-6 bg-white/5 rounded-2xl border border-white/10 group">
-                                    <div class="flex justify-between items-center mb-4">
-                                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Account Transfer</span>
-                                    </div>
-                                    <div class="space-y-3">
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-gray-500">Account Holder</span>
-                                            <span class="font-bold">RetraLabs</span>
-                        </div>
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-gray-500">Number</span>
-                                            <span class="font-mono font-bold text-accent">LOCKED</span>
-                                        </div>
-                                    </div>
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <span class="block text-accent font-bold uppercase tracking-widest text-[10px] mb-2">Total Amount</span>
+                                    <div id="order-total" class="text-5xl font-black tracking-tighter">₹0</div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                    <!-- WhatsApp Confirmation -->
+                <!-- Right Column: Delivery + Payment -->
+                <div class="space-y-6 scroll-reveal" style="transition-delay: 0.1s;">
+
+                    <!-- Delivery Details -->
+                    <div class="bg-white rounded-[2.5rem] p-10 border border-charcoal/5 shadow-sm">
+                        <h3 class="text-xl font-extrabold tracking-tight mb-6">Delivery Details</h3>
+                        <div class="space-y-4">
+                            <input id="customer-name" type="text" placeholder="Full Name" autocomplete="name"
+                                class="w-full bg-gray-50 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm font-medium outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-gray-400" />
+                            <input id="customer-phone" type="tel" placeholder="10-digit Mobile Number" autocomplete="tel" maxlength="10"
+                                class="w-full bg-gray-50 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm font-medium outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-gray-400" />
+                            <textarea id="customer-address" rows="3" placeholder="Complete Delivery Address" autocomplete="street-address"
+                                class="w-full bg-gray-50 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm font-medium outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-gray-400 resize-none"></textarea>
+                            <input id="customer-pincode" type="text" placeholder="Pincode" maxlength="6" inputmode="numeric"
+                                class="w-full bg-gray-50 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm font-medium outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-gray-400" />
+                        </div>
+                        <div id="form-error" class="hidden mt-4 text-sm text-red-500 bg-red-50 rounded-xl px-4 py-3"></div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="bg-white rounded-[2.5rem] p-10 border border-charcoal/5 shadow-sm">
+                        <h3 class="text-xl font-extrabold tracking-tight mb-6">Payment Method</h3>
+                        <div class="space-y-3">
+                            <label id="label-prepaid" class="flex items-start gap-4 p-5 rounded-2xl border-2 border-accent cursor-pointer transition-all" onclick="selectPayment(‘PREPAID’)">
+                                <div class="mt-0.5 w-5 h-5 rounded-full border-2 border-accent flex items-center justify-center flex-shrink-0">
+                                    <div id="dot-prepaid" class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm">Pre-payment</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">Pay via bank transfer before shipment — no extra fee</div>
+                                </div>
+                            </label>
+                            <label id="label-cod" class="flex items-start gap-4 p-5 rounded-2xl border-2 border-charcoal/10 cursor-pointer transition-all" onclick="selectPayment(‘COD’)">
+                                <div class="mt-0.5 w-5 h-5 rounded-full border-2 border-charcoal/30 flex items-center justify-center flex-shrink-0">
+                                    <div id="dot-cod" class="w-2.5 h-2.5 rounded-full hidden"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm">Cash on Delivery (COD)</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">Pay cash when your order arrives</div>
+                                    <div id="cod-fee-hint" class="text-xs text-orange-500 font-bold mt-1 hidden"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp Checkout -->
                     <div class="bg-white rounded-[2.5rem] p-10 border-2 border-accent shadow-xl overflow-hidden relative group">
                         <div class="relative z-10">
-                            <h3 class="text-2xl font-extrabold tracking-tight mb-4">Finalize via Research Desk</h3>
-                            <p class="text-gray-500 text-sm mb-8">Click below to share your order details with our team. We will provide secure payment instructions directly via WhatsApp.</p>
-                            <a href="https://wa.me/918217824384" target="_blank" id="whatsapp-checkout-btn" class="flex items-center justify-center gap-4 bg-[#25D366] text-white py-6 rounded-full font-bold shadow-xl shadow-[#25D366]/20 hover:scale-105 transition-all">
+                            <h3 class="text-2xl font-extrabold tracking-tight mb-4">Place Order</h3>
+                            <p class="text-gray-500 text-sm mb-8">We’ll confirm your order via WhatsApp and arrange delivery.</p>
+                            <button id="whatsapp-checkout-btn" onclick="submitAndRedirect()" class="w-full flex items-center justify-center gap-4 bg-[#25D366] text-white py-6 rounded-full font-bold shadow-xl shadow-[#25D366]/20 hover:scale-105 transition-all">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                                 Proceed to WhatsApp Checkout
-                            </a>
-                        </div>
+                            </button>
                         </div>
                     </div>
-                </div>
 
                     <!-- Instructions -->
                     <div class="p-8 bg-charcoal/5 rounded-[2rem] border border-charcoal/5">
-                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] mb-4">Protocol Details</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.2em] mb-4">What happens next?</h4>
                         <ul class="space-y-3 text-xs text-gray-400 leading-relaxed">
-                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Transfer the exact amount shown.</li>
-                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Capture a clear screenshot of successful transaction.</li>
-                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Confirmation provided within 24 hours of receipt.</li>
+                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Your order is saved and you’ll get an Order ID to track delivery.</li>
+                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> Our team confirms via WhatsApp within a few hours.</li>
+                            <li class="flex items-start gap-3"><div class="w-1.5 h-1.5 bg-accent rounded-full mt-1"></div> For COD — pay cash to the delivery agent. For pre-payment — bank transfer details sent on WhatsApp.</li>
                         </ul>
                     </div>
                 </div>
@@ -156,10 +160,50 @@
     <script src="/script.js?v=20260111-1"></script>
     <script src="/cart.js?v=20260111-1"></script>
     <script>
+        let selectedPayment = 'PREPAID';
+
+        function getCodFee(subtotal) {
+            return subtotal <= 5000 ? 500 : 1000;
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            const isPrepaid = method === 'PREPAID';
+
+            document.getElementById('label-prepaid').style.borderColor = isPrepaid ? '#00D2D3' : 'rgba(10,10,10,0.1)';
+            document.getElementById('label-cod').style.borderColor = !isPrepaid ? '#00D2D3' : 'rgba(10,10,10,0.1)';
+            document.getElementById('dot-prepaid').classList.toggle('hidden', !isPrepaid);
+            document.getElementById('dot-cod').classList.toggle('hidden', isPrepaid);
+            document.getElementById('dot-prepaid').style.background = isPrepaid ? '#00D2D3' : '';
+            document.getElementById('dot-cod').style.background = !isPrepaid ? '#00D2D3' : '';
+
+            updateOrderTotal();
+        }
+
+        function updateOrderTotal() {
+            if (!window.cart) return;
+            const subtotal = window.cart.getSubtotal();
+            const delivery = window.cart.deliveryCharge;
+            const codFee = selectedPayment === 'COD' ? getCodFee(subtotal) : 0;
+            const total = subtotal + delivery + codFee;
+
+            document.getElementById('order-total').textContent = `₹${total.toLocaleString()}`;
+
+            const codLine = document.getElementById('cod-fee-line');
+            const codHint = document.getElementById('cod-fee-hint');
+            if (selectedPayment === 'COD') {
+                codLine.classList.remove('hidden');
+                document.getElementById('cod-fee-amount').textContent = `₹${codFee.toLocaleString()}`;
+                codHint.classList.remove('hidden');
+                codHint.textContent = `+₹${codFee.toLocaleString()} COD handling fee`;
+            } else {
+                codLine.classList.add('hidden');
+                codHint.classList.add('hidden');
+            }
+        }
+
         function renderOrderSummary() {
             const orderItems = document.getElementById('order-items');
-            const orderTotal = document.getElementById('order-total');
-            
             if (!window.cart || window.cart.items.length === 0) {
                 window.location.href = '/cart';
                 return;
@@ -189,38 +233,95 @@
             `;
 
             orderItems.innerHTML = itemsHTML;
-            orderTotal.textContent = `₹${window.cart.getTotal().toLocaleString()}`;
+            updateOrderTotal();
         }
 
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            const text = element.textContent.trim();
-            const btn = event.target;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                    const originalText = btn.textContent;
-                btn.textContent = 'COPIED';
-                btn.classList.add('text-green-500');
-                    
-                    setTimeout(() => {
-                        btn.textContent = originalText;
-                    btn.classList.remove('text-green-500');
-                        }, 2000);
-                    }).catch(() => {
-                // Fallback
-                const input = document.createElement('input');
-                input.value = text;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-                btn.textContent = 'COPIED';
-            });
+        function showError(msg) {
+            const el = document.getElementById('form-error');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // Initialize
+        function hideError() {
+            document.getElementById('form-error').classList.add('hidden');
+        }
+
+        function buildWhatsAppMessage(orderId, payload, codFee) {
+            const itemLines = payload.items
+                .map(i => `• ${i.productName} ${i.dosage}mg × ${i.quantity} = ₹${(i.price * i.quantity).toLocaleString()}`)
+                .join('\n');
+            const isCod = payload.paymentMethod === 'COD';
+            const feeRow = isCod ? `\nCOD Fee: ₹${codFee.toLocaleString()}` : '';
+            const total = payload.subtotal + payload.deliveryCharge + codFee;
+            return `*RetraLabs Order — ${isCod ? 'COD' : 'Prepaid'}*\n\nOrder ID: *${orderId}*\n\nItems:\n${itemLines}\n\nDelivery: ₹${payload.deliveryCharge.toLocaleString()}${feeRow}\n*Total: ₹${total.toLocaleString()}*\n\nDelivery to:\n${payload.customerName}\n${payload.customerPhone}\n${payload.customerAddress}\nPincode: ${payload.pincode}\n\nPayment: ${isCod ? 'Cash on Delivery' : 'Bank Transfer (awaiting payment)'}`;
+        }
+
+        async function submitAndRedirect() {
+            hideError();
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+            const pincode = document.getElementById('customer-pincode').value.trim();
+
+            if (!name) return showError('Please enter your full name.');
+            if (!phone) return showError('Please enter your mobile number.');
+            if (!/^\d{10}$/.test(phone)) return showError('Mobile number must be exactly 10 digits.');
+            if (!address) return showError('Please enter your delivery address.');
+            if (!pincode) return showError('Please enter your pincode.');
+            if (!/^\d{6}$/.test(pincode)) return showError('Pincode must be exactly 6 digits.');
+
+            const btn = document.getElementById('whatsapp-checkout-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="animate-pulse">Processing…</span>';
+
+            const subtotal = window.cart.getSubtotal();
+            const codFee = selectedPayment === 'COD' ? getCodFee(subtotal) : 0;
+
+            const payload = {
+                customerName: name,
+                customerPhone: phone,
+                customerAddress: address,
+                pincode,
+                paymentMethod: selectedPayment,
+                items: window.cart.items.map(i => ({
+                    productKey: i.productKey,
+                    productName: i.productName,
+                    dosage: i.dosage,
+                    price: i.price,
+                    quantity: i.quantity
+                })),
+                deliveryCharge: window.cart.deliveryCharge,
+                subtotal,
+                total: subtotal + window.cart.deliveryCharge + codFee
+            };
+
+            try {
+                const res = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) throw new Error(data.message || 'Order submission failed');
+
+                sessionStorage.setItem('lastOrderId', data.orderId);
+                window.cart.clearCart();
+
+                const waMsg = buildWhatsAppMessage(data.orderId, payload, codFee);
+                window.open(`https://wa.me/918217824384?text=${encodeURIComponent(waMsg)}`, '_blank');
+                window.location.href = `/track?order=${data.orderId}`;
+
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Proceed to WhatsApp Checkout`;
+                showError(err.message || 'Something went wrong. Please try again.');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-        renderOrderSummary();
+            renderOrderSummary();
+            selectPayment('PREPAID');
         });
     </script>
 </body>
