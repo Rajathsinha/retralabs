@@ -13,8 +13,9 @@ RUN chown -R nextjs:nodejs /app
 
 # Dependencies stage
 FROM base AS deps
+RUN apk add --no-cache python3 make g++
 COPY package*.json ./
-RUN npm install --omit=dev --ignore-scripts && \
+RUN npm install --omit=dev && \
     npm cache clean --force
 
 # Build stage (if you add build steps later)
@@ -26,6 +27,9 @@ COPY --chown=nextjs:nodejs . .
 FROM base AS production
 COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --chown=nextjs:nodejs . .
+
+# Create data directory for SQLite with correct ownership
+RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 
 # Switch to non-root user
 USER nextjs

@@ -2,6 +2,12 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
+require('./db');
+
+const ordersRouter = require('./routes/orders');
+const trackRouter = require('./routes/track');
+const adminRouter = require('./routes/admin');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -11,6 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// API routes
+app.use('/api/orders', ordersRouter);
+app.use('/api/track', trackRouter);
+app.use('/api/admin', adminRouter);
 
 // HTML file path
 const htmlPath = path.join(__dirname, 'views', 'index.html');
@@ -76,6 +87,15 @@ app.post('/api/contact', (req, res) => {
         success: true, 
         message: 'Thank you for your message! We will get back to you soon.' 
     });
+});
+
+// Tracking and admin pages
+app.get('/track', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'track.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'admin.html'));
 });
 
 // Health check route

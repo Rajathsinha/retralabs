@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | RetraLabs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: '#0A0A0A',
+                        accent: '#00D2D3',
+                        panel: '#111111',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0A0A0A; color: #F5F5F7; font-family: 'Inter', sans-serif; }
+        .card { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; }
+        .modal-overlay { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<!-- Login Screen -->
+<div id="login-screen" class="min-h-screen flex items-center justify-center p-6">
+    <div class="card p-10 w-full max-w-sm">
+        <div class="text-center mb-8">
+            <div class="w-12 h-12 bg-accent/10 border border-accent/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#00D2D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="3" fill="#00D2D3" fill-opacity="0.3"/>
+                </svg>
+            </div>
+            <h1 class="text-xl font-extrabold tracking-tight text-white">RetraLabs Admin</h1>
+            <p class="text-xs text-gray-500 mt-1 uppercase tracking-widest">Secure Access</p>
+        </div>
+        <input id="password-input" type="password" placeholder="Password" autocomplete="current-password"
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all mb-4"
+        />
+        <div id="login-error" class="text-red-400 text-xs mb-3 hidden">Invalid password</div>
+        <button onclick="doLogin()" class="w-full bg-accent text-charcoal font-bold py-4 rounded-xl hover:opacity-90 transition-opacity">
+            Access Panel
+        </button>
+    </div>
+</div>
+
+<!-- Admin Panel -->
+<div id="admin-panel" class="hidden">
+    <!-- Top bar -->
+    <header class="border-b border-white/5 px-8 py-5 flex items-center justify-between sticky top-0 z-40" style="background:#0A0A0A;">
+        <div class="flex items-center gap-4">
+            <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div>
+                <div class="text-white font-extrabold text-sm tracking-tight">RetraLabs Admin</div>
+                <div class="text-gray-500 text-[10px] uppercase tracking-widest">Order Management</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-xs text-gray-500">
+                <div class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></div>
+                Auto-refresh in <span id="refresh-countdown">60</span>s
+            </div>
+            <button onclick="doLogout()" class="text-xs text-gray-500 hover:text-white border border-white/10 px-4 py-2 rounded-lg transition-colors">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <main class="p-8 max-w-7xl mx-auto">
+        <!-- Filters -->
+        <div class="flex items-center gap-3 mb-6 flex-wrap">
+            <span class="text-xs font-bold uppercase tracking-widest text-gray-500">Filter:</span>
+            <button onclick="setFilter('')" id="filter-all" class="filter-btn active text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-white hover:border-accent transition-colors">All</button>
+            <button onclick="setFilter('PENDING')" id="filter-PENDING" class="filter-btn text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:border-accent transition-colors">Pending</button>
+            <button onclick="setFilter('CONFIRMED')" id="filter-CONFIRMED" class="filter-btn text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:border-accent transition-colors">Confirmed</button>
+            <button onclick="setFilter('SHIPPED')" id="filter-SHIPPED" class="filter-btn text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:border-accent transition-colors">Shipped</button>
+            <button onclick="setFilter('DELIVERED')" id="filter-DELIVERED" class="filter-btn text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:border-accent transition-colors">Delivered</button>
+            <button onclick="setFilter('COD_COLLECTED')" id="filter-COD_COLLECTED" class="filter-btn text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:border-accent transition-colors">COD Collected</button>
+            <button onclick="setFilter('CANCELLED')" id="filter-CANCELLED" class="filter-btn text-xs font-bold px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:border-accent transition-colors">Cancelled</button>
+        </div>
+
+        <!-- Orders list -->
+        <div id="orders-list"></div>
+    </main>
+</div>
+
+<!-- Order Detail Modal -->
+<div id="order-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6">
+    <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
+    <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto" style="background:#111111;border:1px solid rgba(255,255,255,0.1);border-radius:2rem;">
+        <div class="sticky top-0 flex items-center justify-between p-6 border-b border-white/5" style="background:#111111;">
+            <div>
+                <div class="text-xs text-gray-500 uppercase tracking-widest mb-1">Order Details</div>
+                <div id="modal-order-id" class="font-mono font-black text-accent text-lg"></div>
+            </div>
+            <button onclick="closeModal()" class="text-gray-500 hover:text-white text-xl leading-none px-2">✕</button>
+        </div>
+        <div id="modal-body" class="p-6 space-y-5"></div>
+    </div>
+</div>
+
+<style>
+    .filter-btn.active { border-color: #00D2D3; color: #00D2D3; }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid; }
+    .badge-PENDING           { background:#fef3c7;color:#92400e;border-color:#fde68a; }
+    .badge-CONFIRMED         { background:#dbeafe;color:#1e40af;border-color:#bfdbfe; }
+    .badge-SHIPPED           { background:#ede9fe;color:#5b21b6;border-color:#ddd6fe; }
+    .badge-OUT_FOR_DELIVERY  { background:#ffedd5;color:#c2410c;border-color:#fed7aa; }
+    .badge-DELIVERED         { background:#dcfce7;color:#166534;border-color:#bbf7d0; }
+    .badge-COD_COLLECTED     { background:rgba(0,210,211,0.1);color:#00D2D3;border-color:rgba(0,210,211,0.3); }
+    .badge-CANCELLED         { background:#fee2e2;color:#991b1b;border-color:#fecaca; }
+    .badge-PAYMENT-PENDING   { background:#fef3c7;color:#92400e;border-color:#fde68a; }
+    .badge-RECEIVED          { background:#dcfce7;color:#166534;border-color:#bbf7d0; }
+    .badge-COLLECTED         { background:rgba(0,210,211,0.1);color:#00D2D3;border-color:rgba(0,210,211,0.3); }
+    .badge-FAILED            { background:#fee2e2;color:#991b1b;border-color:#fecaca; }
+</style>
+
+<script>
+    let adminToken = sessionStorage.getItem('adminToken');
+    let currentFilter = '';
+    let refreshInterval, countdownInterval, countdownVal = 60;
+    let currentOrderId = null;
+
+    function statusBadge(s) { return `<span class="status-badge badge-${s}">${s.replace(/_/g,' ')}</span>`; }
+    function fmtDate(iso) {
+        if (!iso) return '—';
+        return new Date(iso).toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+    function fmt(n) { return '₹' + (n||0).toLocaleString(); }
+
+    async function adminFetch(path, opts = {}) {
+        const res = await fetch(path, {
+            ...opts,
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}`, ...(opts.headers||{}) }
+        });
+        if (res.status === 401) { doLogout(); return null; }
+        return res;
+    }
+
+    async function doLogin() {
+        const pw = document.getElementById('password-input').value;
+        const res = await fetch('/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pw }) });
+        const data = await res.json();
+        if (data.token) {
+            adminToken = data.token;
+            sessionStorage.setItem('adminToken', adminToken);
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+            loadOrders();
+            startAutoRefresh();
+        } else {
+            document.getElementById('login-error').classList.remove('hidden');
+        }
+    }
+
+    function doLogout() {
+        adminToken = null;
+        sessionStorage.removeItem('adminToken');
+        clearInterval(refreshInterval);
+        clearInterval(countdownInterval);
+        document.getElementById('admin-panel').classList.add('hidden');
+        document.getElementById('login-screen').classList.remove('hidden');
+        document.getElementById('password-input').value = '';
+    }
+
+    document.getElementById('password-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+    function setFilter(status) {
+        currentFilter = status;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active', 'text-accent'));
+        const btn = document.getElementById('filter-' + (status || 'all'));
+        if (btn) btn.classList.add('active');
+        loadOrders();
+    }
+
+    async function loadOrders() {
+        const url = currentFilter ? `/api/admin/orders?status=${currentFilter}` : '/api/admin/orders';
+        const res = await adminFetch(url);
+        if (!res) return;
+        const { orders } = await res.json();
+        renderOrders(orders || []);
+    }
+
+    function renderOrders(orders) {
+        if (orders.length === 0) {
+            document.getElementById('orders-list').innerHTML = '<div class="text-center py-16 text-gray-600 text-sm">No orders found.</div>';
+            return;
+        }
+        document.getElementById('orders-list').innerHTML = `
+            <div class="space-y-3">
+                ${orders.map(o => `
+                    <div class="card p-5 flex items-center gap-4 hover:border-white/20 transition-all cursor-pointer" onclick="openModal('${o.id}')">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="font-mono font-black text-accent text-sm">${o.id}</span>
+                                ${statusBadge(o.order_status)}
+                                ${o.payment_method === 'COD' ? '<span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">COD</span>' : '<span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Prepaid</span>'}
+                                ${o.payment_method === 'PREPAID' && o.payment_status === 'PENDING' ? '<span class="text-[10px] font-bold text-red-400 uppercase tracking-wider">⚠ Awaiting Payment</span>' : ''}
+                            </div>
+                            <div class="text-white font-bold text-sm">${o.customer_name} · <span class="font-mono text-gray-400">${o.customer_phone}</span></div>
+                            <div class="text-gray-500 text-xs mt-0.5">${fmtDate(o.created_at)}</div>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <div class="font-black text-white text-lg">${fmt(o.total_amount)}</div>
+                            <div class="text-gray-500 text-xs">${statusBadge(o.payment_status)}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    async function openModal(orderId) {
+        currentOrderId = orderId;
+        document.getElementById('modal-order-id').textContent = orderId;
+        document.getElementById('modal-body').innerHTML = '<div class="text-center py-10 text-gray-500 text-sm">Loading…</div>';
+        document.getElementById('order-modal').classList.remove('hidden');
+
+        const res = await adminFetch(`/api/admin/orders/${orderId}`);
+        if (!res) return;
+        const { order, items, history } = await res.json();
+
+        const itemsHtml = (items || []).map(i => `
+            <div class="flex justify-between text-sm"><span class="text-gray-400">${i.product_name} ${i.dosage_mg}mg × ${i.quantity}</span><span class="font-bold text-white">${fmt(i.line_total)}</span></div>
+        `).join('');
+
+        const historyHtml = (history || []).map(h => `
+            <div class="flex gap-3 text-xs">
+                <span class="text-gray-500 w-36 flex-shrink-0">${fmtDate(h.changed_at)}</span>
+                <span>${statusBadge(h.status)}</span>
+                ${h.note ? `<span class="text-gray-400 italic">${h.note}</span>` : ''}
+            </div>
+        `).join('');
+
+        const codFeeRow = order.cod_fee > 0 ? `<div class="flex justify-between text-sm"><span class="text-gray-500">COD Fee</span><span class="text-white font-bold">${fmt(order.cod_fee)}</span></div>` : '';
+
+        const canCollectCod = order.payment_method === 'COD' && ['DELIVERED','OUT_FOR_DELIVERY'].includes(order.order_status) && order.payment_status !== 'COLLECTED';
+        const canMarkPrepaidReceived = order.payment_method === 'PREPAID' && order.payment_status === 'PENDING';
+
+        document.getElementById('modal-body').innerHTML = `
+            <!-- Customer Info -->
+            <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;" class="space-y-2">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Customer</div>
+                <div class="text-sm text-white font-bold">${order.customer_name}</div>
+                <div class="text-sm text-gray-400 font-mono">${order.customer_phone}</div>
+                <div class="text-sm text-gray-400">${order.customer_address}</div>
+                <div class="text-sm text-gray-400">Pincode: ${order.pincode}</div>
+            </div>
+
+            <!-- Items + Totals -->
+            <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;" class="space-y-2">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Order Items</div>
+                ${itemsHtml}
+                <div class="border-t border-white/5 pt-3 space-y-1 mt-2">
+                    <div class="flex justify-between text-sm"><span class="text-gray-500">Delivery</span><span class="text-white font-bold">${fmt(order.delivery_charge)}</span></div>
+                    ${codFeeRow}
+                    <div class="flex justify-between text-base font-black text-white pt-1 border-t border-white/5"><span>Total</span><span>${fmt(order.total_amount)}</span></div>
+                </div>
+            </div>
+
+            <!-- Status History -->
+            <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;" class="space-y-2">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Status History</div>
+                <div class="space-y-2">${historyHtml}</div>
+            </div>
+
+            <!-- Update Status -->
+            <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;" class="space-y-3">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Update Status</div>
+                <select id="modal-status-select" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-accent transition-colors">
+                    <option value="PENDING">Pending</option>
+                    <option value="CONFIRMED">Confirmed</option>
+                    <option value="SHIPPED">Shipped</option>
+                    <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
+                    <option value="DELIVERED">Delivered</option>
+                    <option value="COD_COLLECTED">COD Collected</option>
+                    <option value="CANCELLED">Cancelled</option>
+                </select>
+                <input id="modal-status-note" type="text" placeholder="Note (optional — e.g. tracking number)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-accent transition-colors placeholder:text-gray-600" />
+                <button onclick="updateStatus()" class="w-full bg-accent text-charcoal font-bold py-3 rounded-xl hover:opacity-90 transition-opacity text-sm">
+                    Update Status
+                </button>
+            </div>
+
+            <!-- COD Collection -->
+            ${canCollectCod ? `
+            <div style="background:rgba(0,210,211,0.05);border:1px solid rgba(0,210,211,0.2);border-radius:1rem;padding:1.25rem;">
+                <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">COD Payment</div>
+                <p class="text-sm text-gray-400 mb-4">Mark cash as collected from customer upon delivery.</p>
+                <button onclick="markCodCollected()" class="w-full bg-accent text-charcoal font-bold py-3 rounded-xl hover:opacity-90 transition-opacity text-sm">
+                    ✓ Mark COD Collected
+                </button>
+            </div>
+            ` : ''}
+
+            <!-- Prepaid Payment Confirmation -->
+            ${canMarkPrepaidReceived ? `
+            <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:1rem;padding:1.25rem;">
+                <div class="text-xs font-bold uppercase tracking-widest text-red-400 mb-3">⚠ Payment Not Yet Confirmed</div>
+                <p class="text-sm text-gray-400 mb-4">This order was placed as Pre-payment but no bank transfer has been confirmed yet. Verify the transfer before shipping, then mark it received.</p>
+                <button onclick="markPrepaidReceived()" class="w-full bg-white text-charcoal font-bold py-3 rounded-xl hover:opacity-90 transition-opacity text-sm">
+                    ✓ Mark Payment Received
+                </button>
+            </div>
+            ` : ''}
+
+            <!-- Admin Notes -->
+            <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;" class="space-y-3">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Admin Notes</div>
+                <textarea id="modal-notes" rows="3" placeholder="Private notes (not shown to customer)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-accent transition-colors placeholder:text-gray-600 resize-none">${order.admin_notes || ''}</textarea>
+                <button onclick="saveNotes()" class="text-xs font-bold text-gray-400 hover:text-white border border-white/10 px-5 py-2.5 rounded-lg transition-colors">
+                    Save Notes
+                </button>
+            </div>
+        `;
+
+        document.getElementById('modal-status-select').value = order.order_status;
+    }
+
+    function closeModal() {
+        document.getElementById('order-modal').classList.add('hidden');
+        currentOrderId = null;
+    }
+
+    async function updateStatus() {
+        const status = document.getElementById('modal-status-select').value;
+        const note = document.getElementById('modal-status-note').value.trim();
+        const res = await adminFetch(`/api/admin/orders/${currentOrderId}/status`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status, note: note || null })
+        });
+        if (res && res.ok) {
+            closeModal();
+            loadOrders();
+        }
+    }
+
+    async function markCodCollected() {
+        const res = await adminFetch(`/api/admin/orders/${currentOrderId}/payment`, {
+            method: 'PATCH',
+            body: JSON.stringify({ paymentStatus: 'COLLECTED' })
+        });
+        if (res && res.ok) {
+            closeModal();
+            loadOrders();
+        }
+    }
+
+    async function markPrepaidReceived() {
+        const res = await adminFetch(`/api/admin/orders/${currentOrderId}/payment`, {
+            method: 'PATCH',
+            body: JSON.stringify({ paymentStatus: 'RECEIVED' })
+        });
+        if (res && res.ok) {
+            closeModal();
+            loadOrders();
+        }
+    }
+
+    async function saveNotes() {
+        const notes = document.getElementById('modal-notes').value;
+        await adminFetch(`/api/admin/orders/${currentOrderId}/notes`, {
+            method: 'PATCH',
+            body: JSON.stringify({ notes })
+        });
+    }
+
+    function startAutoRefresh() {
+        countdownVal = 60;
+        clearInterval(refreshInterval);
+        clearInterval(countdownInterval);
+        refreshInterval = setInterval(() => { loadOrders(); countdownVal = 60; }, 60000);
+        countdownInterval = setInterval(() => {
+            countdownVal--;
+            const el = document.getElementById('refresh-countdown');
+            if (el) el.textContent = countdownVal;
+        }, 1000);
+    }
+
+    // Auto-login if token in sessionStorage
+    if (adminToken) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        loadOrders();
+        startAutoRefresh();
+    }
+</script>
+</body>
+</html>
