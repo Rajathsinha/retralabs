@@ -207,6 +207,7 @@
                                 <span class="font-mono font-black text-accent text-sm">${o.id}</span>
                                 ${statusBadge(o.order_status)}
                                 ${o.payment_method === 'COD' ? '<span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">COD</span>' : '<span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Prepaid</span>'}
+                                ${o.payment_method === 'PREPAID' && o.payment_status === 'PENDING' ? '<span class="text-[10px] font-bold text-red-400 uppercase tracking-wider">⚠ Awaiting Payment</span>' : ''}
                             </div>
                             <div class="text-white font-bold text-sm">${o.customer_name} · <span class="font-mono text-gray-400">${o.customer_phone}</span></div>
                             <div class="text-gray-500 text-xs mt-0.5">${fmtDate(o.created_at)}</div>
@@ -246,6 +247,7 @@
         const codFeeRow = order.cod_fee > 0 ? `<div class="flex justify-between text-sm"><span class="text-gray-500">COD Fee</span><span class="text-white font-bold">${fmt(order.cod_fee)}</span></div>` : '';
 
         const canCollectCod = order.payment_method === 'COD' && ['DELIVERED','OUT_FOR_DELIVERY'].includes(order.order_status) && order.payment_status !== 'COLLECTED';
+        const canMarkPrepaidReceived = order.payment_method === 'PREPAID' && order.payment_status === 'PENDING';
 
         document.getElementById('modal-body').innerHTML = `
             <!-- Customer Info -->
@@ -303,6 +305,17 @@
             </div>
             ` : ''}
 
+            <!-- Prepaid Payment Confirmation -->
+            ${canMarkPrepaidReceived ? `
+            <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:1rem;padding:1.25rem;">
+                <div class="text-xs font-bold uppercase tracking-widest text-red-400 mb-3">⚠ Payment Not Yet Confirmed</div>
+                <p class="text-sm text-gray-400 mb-4">This order was placed as Pre-payment but no bank transfer has been confirmed yet. Verify the transfer before shipping, then mark it received.</p>
+                <button onclick="markPrepaidReceived()" class="w-full bg-white text-charcoal font-bold py-3 rounded-xl hover:opacity-90 transition-opacity text-sm">
+                    ✓ Mark Payment Received
+                </button>
+            </div>
+            ` : ''}
+
             <!-- Admin Notes -->
             <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.06);border-radius:1rem;padding:1.25rem;" class="space-y-3">
                 <div class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Admin Notes</div>
@@ -338,6 +351,17 @@
         const res = await adminFetch(`/api/admin/orders/${currentOrderId}/payment`, {
             method: 'PATCH',
             body: JSON.stringify({ paymentStatus: 'COLLECTED' })
+        });
+        if (res && res.ok) {
+            closeModal();
+            loadOrders();
+        }
+    }
+
+    async function markPrepaidReceived() {
+        const res = await adminFetch(`/api/admin/orders/${currentOrderId}/payment`, {
+            method: 'PATCH',
+            body: JSON.stringify({ paymentStatus: 'RECEIVED' })
         });
         if (res && res.ok) {
             closeModal();

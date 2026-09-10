@@ -195,6 +195,11 @@
                             </div>
                         </div>
                         ${cancelledBadge}
+                        ${data.paymentMethod === 'PREPAID' && data.paymentStatus === 'PENDING' ? `
+                        <div class="mt-4 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-800 leading-relaxed">
+                            <strong>Payment pending —</strong> we haven't received your bank transfer yet. Please complete the transfer and share the screenshot on WhatsApp so we can confirm and process your order.
+                        </div>
+                        ` : ''}
                     </div>
 
                     <!-- Timeline -->
